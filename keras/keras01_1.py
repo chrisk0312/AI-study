@@ -14,7 +14,7 @@ model.add(Dense(1, input_dim=1))
 
 #3. 컴파일,훈련
 model.compile(loss='mse', optimizer='adam')
-model.fit(x,y, epochs=16000)  #최적의 웨이트가 생성
+model.fit(x,y, epochs=12000)  #최적의 웨이트가 생성
 
 #4. 평가, 예측
 loss = model.evaluate(x,y)
