@@ -14,10 +14,14 @@ model.add(Dense(1, input_dim=1))
 
 #3. 컴파일,훈련
 model.compile(loss='mse', optimizer='adam')
-model.fit(x,y, epochs=30000)  #최적의 웨이트가 생성
+model.fit(x,y, epochs=16000)  #최적의 웨이트가 생성
 
 #4. 평가, 예측
 loss = model.evaluate(x,y)
 print("로스:", loss)
 result = model.predict([4])
 print ("4의 예측값 : ", result)
+
+# 로스: 0.0
+# 1/1 [==============================] - 0s 43ms/step
+# 4의 예측값 :  [[4.]]
