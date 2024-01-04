@@ -63,3 +63,7 @@ results = model.predict(x)
 from sklearn.metrics import r2_score
 r2= r2_score(y_test, y_predict)
 print ("R2 스코어 :",r2)
+
+
+# 로스 : 33.07808303833008
+# R2 스코어 : 0.6575566714761335
