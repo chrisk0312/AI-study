@@ -51,26 +51,26 @@ y = train_csv['count']
 print(y)
 
 
-x_train,x_test, y_train, y_test = train_test_split(x,y, train_size=0.7, random_state=333,)
+x_train,x_test, y_train, y_test = train_test_split(x,y, train_size=0.2, random_state=100,)
 print(x_train.shape,x_test.shape) #(929, 9) (399, 9)
 print(y_train.shape, y_test.shape) #(929,) (399,)
 
 #2. 모델
 model = Sequential()
-model.add(Dense(1, input_dim=9))
-model.add(Dense(10))
-model.add(Dense(10))
-model.add(Dense(10))
-model.add(Dense(10))
+model.add(Dense(64, input_dim=9))
+model.add(Dense(128))
+model.add(Dense(128))
+model.add(Dense(128))
+model.add(Dense(128))
 model.add(Dense(1))
 
 
 #3. 컴파일,훈련
-model.compile(loss='mse', optimizer='adam')
-model.fit(x_train, y_train, epochs=100, batch_size=32,)
+model.compile(loss='mae', optimizer='adam')
+model.fit(x_train, y_train, epochs=1000, batch_size=1)
 
 #4.평가,예측
-model.evaluate(x_test, y_test)
+loss = model.evaluate(x_test, y_test)
 y_submit = model.predict(test_csv)
 print(y_submit)
 print(y_submit.shape) #(715, 1)
@@ -82,4 +82,6 @@ submission_csv['count'] = y_submit
 print(submission_csv)
 print(submission_csv.shape)
 
-submission_csv.to_csv(path+"submission_0105.csv", index=False)
+submission_csv.to_csv(path+"submission_0105_8.csv", index=False)
+
+print("로스 :",loss)
