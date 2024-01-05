@@ -51,7 +51,7 @@ model.add(Dense(20))
 model.add(Dense(1))
 
 #3 컴파일,훈련
-model.compile(loss='mse', optimizer='adam')
+model.compile(loss='mae', optimizer='adam')
 model.fit(x_train,y_train, epochs=150, batch_size=1)
 
 #4. 평가,예측
@@ -65,5 +65,8 @@ r2= r2_score(y_test, y_predict)
 print ("R2 스코어 :",r2)
 
 
-# 로스 : 33.07808303833008
+# 로스 : 33.07808303833008 (mse)
 # R2 스코어 : 0.6575566714761335
+
+# 로스 : 3.9236836433410645 (mae)
+# R2 스코어 : 0.6746762919060152

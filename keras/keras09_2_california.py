@@ -44,7 +44,7 @@ model.add(Dense(1))
 #3 컴파일,훈련
 model.compile(loss='mse', optimizer='adam')
 start_time = time.time()
-model.fit(x_train, y_train, epochs=5000, batch_size=64)
+model.fit(x_train, y_train, epochs=100, batch_size=64)
 end_time = time.time()
 
 #4. 평가, 예측
@@ -58,6 +58,15 @@ r2 = r2_score(y_test, y_predict)
 print("R2 스코어 :",r2)
 print("걸린시간:", round (end_time - start_time,2), "초")
 
-# 로스 : 0.528454065322876
+# epochs=5000
+# 로스 : 0.528454065322876 
 # R2 스코어 : 0.5984864912058194
 # 걸린시간: 861.18 초
+
+# 로스 : 0.7921971678733826(mse) epochs=100
+# R2 스코어 : 0.398097414166786
+# 걸린시간: 18.43 초
+
+# 로스 : 0.557756245136261 (mae) epochs=100
+# R2 스코어 : 0.44845464101008115
+# 걸린시간: 18.55 초
