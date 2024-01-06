@@ -13,4 +13,4 @@ model.add(Dense(3))
 model.add(Dense(1, activation='relu'))
 model.summary()
 
-model.compi
+model.compile(loss='mse', optimizer='adam', metrics=['mse'])
