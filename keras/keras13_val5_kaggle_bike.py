@@ -44,11 +44,13 @@ model.add(Dense(64,activation='relu'))
 model.add(Dense(128,activation='relu'))
 model.add(Dense(128,activation='relu'))
 model.add(Dense(64,activation='relu'))
-model.add(Dense(1))
+model.add(Dense(1, activation='relu'))
 
 #3.컴파일, 훈련
 model.compile(loss='mse', optimizer= 'adam')
-model.fit(x_train, y_train, epochs=300, batch_size=32)
+model.fit(x_train, y_train, epochs=300, batch_size=32,
+          validation_split=0.3,
+          verbose=2)
 
 #4. 평가,예측
 loss = model.evaluate(x_test, y_test)
@@ -60,7 +62,7 @@ print('===================================')
 submission_csv['count'] = y_submit
 print(submission_csv)
 print(submission_csv.shape) #(6493, 2)
-submission_csv.to_csv(path+"submission_0108_03.csv", index= False)
+submission_csv.to_csv(path+"submission_0109_03.csv", index= False)
 print("MSE :", loss)
 
 ################################
@@ -81,3 +83,12 @@ print("RMSLE :", rmsle)
 
 #RMSE : 150.26206291550542
 #R2 스코어: 0.2763171223075017
+
+# RMSE : 150.1618524006552
+# R2 스코어: 0.27728205583989307
+
+# RMSE : 155.41259011172468
+# R2 스코어: 0.22585555722090656
+
+#RMSE : 150.55822806250129
+#R2 스코어: 0.2734615663199157

@@ -57,17 +57,18 @@ print(y_train.shape, y_test.shape) #(929,) (399,)
 
 #2. 모델
 model = Sequential()
-model.add(Dense(64, input_dim=9))
-model.add(Dense(128))
-model.add(Dense(128))
-model.add(Dense(128))
-model.add(Dense(128))
+model.add(Dense(16, input_dim=9))
+model.add(Dense(32))
+model.add(Dense(32))
+model.add(Dense(8))
 model.add(Dense(1))
 
 
 #3. 컴파일,훈련
 model.compile(loss='mae', optimizer='adam')
-model.fit(x_train, y_train, epochs=100, batch_size=1)
+model.fit(x_train, y_train, epochs=100, batch_size=1,
+          validation_split=0.3,
+          verbose=2)
 
 #4.평가,예측
 loss = model.evaluate(x_test, y_test)
@@ -82,6 +83,7 @@ submission_csv['count'] = y_submit
 print(submission_csv)
 print(submission_csv.shape)
 
-submission_csv.to_csv(path+"submission_0105_8.csv", index=False)
+submission_csv.to_csv(path+"submission_0109_2.csv", index=False)
 
 print("로스 :",loss) #로스 : 47.53935623168945
+# 로스 : 49.320796966552734

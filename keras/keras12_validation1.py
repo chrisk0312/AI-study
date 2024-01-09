@@ -11,7 +11,7 @@ x_train = np.array([1,2,3,4,5])
 y_train = np.array([1,2,3,4,5])
 
 x_val =np.array([6,7])
-y_val =np.array([5,7])
+y_val =np.array([6,7])
 
 x_test = np.array([8,9,10])
 y_test = np.array([8,9,10])
