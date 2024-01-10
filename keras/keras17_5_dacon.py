@@ -54,7 +54,7 @@ print(y)
 
 
 x_train,x_test, y_train, y_test = train_test_split(
-    x,y, train_size=0.2,shuffle=False, random_state=100,)
+    x,y, train_size=0.3,shuffle=False, random_state=100,)
 print(x_train.shape,x_test.shape) #(929, 9) (399, 9)
 print(y_train.shape, y_test.shape) #(929,) (399,)
 
@@ -68,15 +68,15 @@ model.add(Dense(1))
 
 
 #3. 컴파일,훈련
-model.compile(loss='mae', optimizer='adam')
+model.compile(loss='mae', optimizer='adam', metrics =['acc'])
 start_time =time.time()
 es = EarlyStopping(monitor= 'val_loss',
                    mode = 'min',
-                   patience=10,
+                   patience=40,
                    verbose=2,
                    restore_best_weights = True,
                    )
-hist = model.fit(x_train, y_train, epochs=100, batch_size=1,
+hist = model.fit(x_train, y_train, epochs=300, batch_size=8,
           validation_split=0.3,
           callbacks= [es],
           verbose=2)
@@ -90,6 +90,11 @@ print(y_submit)
 print(y_submit.shape) #(715, 1)
 
 r2= r2_score(y_test, y_predict)
+from sklearn.metrics import  accuracy_score
+
+def acc(y_test, y_predict):
+    return(accuracy_score(y_test,y_predict))
+
 
 def RMSE(aaa,bbb):
     return np.sqrt(mean_squared_error(aaa,bbb))
@@ -116,7 +121,7 @@ submission_csv['count'] = y_submit
 print(submission_csv)
 print(submission_csv.shape)
 
-submission_csv.to_csv(path+"submission_0109_4.csv", index=False)
+submission_csv.to_csv(path+"submission_0110_5.csv", index=False)
 
 print("로스 :",loss)
 
@@ -133,5 +138,4 @@ plt.ylabel('로스')
 plt.grid()
 plt.show()
 
-#로스 : 41.93373107910156
-# 로스 : 42.132503509521484
+#로스 : 41.178062438964844

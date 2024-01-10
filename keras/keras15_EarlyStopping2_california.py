@@ -50,7 +50,8 @@ start_time = time.time()
 es = EarlyStopping(monitor = 'val_loss',
                    mode ='min',
                    patience=10,
-                   verbose=2
+                   verbose=2,
+                   restore_best_weights= True
                    )
 hist = model.fit(x_train, y_train, epochs=100, batch_size=64,
           validation_split=0.3,
@@ -104,3 +105,13 @@ plt.xlabel('에포')
 plt.ylabel('로스')
 plt.grid()
 plt.show()
+
+# 로스 : 1.180308222770691
+# R2 스코어 : -0.4585328879384474
+# RMSE: 1.086419959441489
+
+
+#restore_best_weights= True
+# 로스 : 0.48177841305732727
+# R2 스코어 : 0.44845146405344993
+# RMSE: 0.6680846456902159

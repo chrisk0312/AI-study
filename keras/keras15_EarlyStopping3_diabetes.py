@@ -46,12 +46,14 @@ start_time = time.time()
 es = EarlyStopping(monitor= 'val_loss',
                    mode ='min',
                    patience=10,
-                   verbose=2
+                   verbose=2,
+                   restore_best_weights = True,
                    )
 hist = model.fit(x_train, y_train, epochs=100, batch_size=64,
                  validation_split=0.3,
                  callbacks= [es],
-                 verbose=2)
+                 verbose=2,
+                               )
 end_time = time.time()
 
 #4. 평가,예측
@@ -94,3 +96,13 @@ plt.xlabel('에포')
 plt.ylabel('로스')
 plt.grid()
 plt.show()
+
+
+# 로스: 1960.192138671875
+# R2스코어 : 0.6468940996979731
+# RMSE 44.27405745416399
+
+
+# 로스: 2298.30810546875
+# R2스코어 : 0.5859864202879512
+# RMSE 47.9406734109984
