@@ -16,3 +16,4 @@ model.summary()
 
 model.compile(loss='mse', optimizer='adam', metrics=['mse'])
 print("model.compile")
+print("model.compile")
