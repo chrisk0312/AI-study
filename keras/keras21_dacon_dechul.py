@@ -6,6 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 from sklearn.metrics import accuracy_score, f1_score
 from keras.utils import to_categorical
+
 #1.데이터
 path= "c:\_data\dacon\dechul\\"
 train_csv=pd.read_csv(path+"train.csv",index_col=0)
@@ -20,8 +21,10 @@ y= train_csv['대출등급']
 print(np.unique(y,return_counts=True))
 
 
-
-y=y.values.reshape(-1,1)
+y = y.values.reshape(-1,1)
+# y=y.values # series -> np.array
+# y =y.reshape(-1,1) #
+# y = y.to_frame()
 
 ohe = OneHotEncoder(sparse=False)
 ohe = OneHotEncoder()
@@ -54,6 +57,18 @@ test_csv['대출목적'] =lb.transform(test_csv['대출목적'])
 
 x_train,x_test,y_train,y_test=train_test_split(x,y_ohe,train_size=0.8,random_state=40,stratify=y_ohe)
 
+
+from sklearn.preprocessing import MaxAbsScaler
+
+scaler = MaxAbsScaler()
+
+scaler.fit(x_train)
+x_train = scaler.transform(x_train)
+x_test = scaler.transform(x_test)
+print(np.min(x_train))
+print(np.min(x_test))
+print(np.max(x_train))
+print(np.max(x_test))
 # print(x_train,x_test)
 # print(y_train,y_test)
 
@@ -64,20 +79,18 @@ x_train,x_test,y_train,y_test=train_test_split(x,y_ohe,train_size=0.8,random_sta
 
 #2.모델구성
 model=Sequential()
-model.add(Dense(20,input_shape=(13,),activation='relu'))
-model.add(Dense(40))
-model.add(Dense(60))
-model.add(Dense(80))
-model.add(Dense(100))
-model.add(Dense(120))
-model.add(Dense(140))
+model.add(Dense(13,input_shape=(13,),activation='relu'))
+model.add(Dense(26))
+model.add(Dense(39))
+model.add(Dense(78))
+model.add(Dense(50))
 model.add(Dense(7,activation='softmax'))
 
 #3.컴파일 훈련
 from keras.callbacks import EarlyStopping
-es= EarlyStopping(monitor='val_loss',mode='min',patience=100,verbose=1,restore_best_weights=True)
+es= EarlyStopping(monitor='val_loss',mode='min',patience=30,verbose=2,restore_best_weights=True)
 model.compile(loss='categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
-hist= model.fit(x_train, y_train, epochs=3000,batch_size=10000, validation_split=0.2,verbose=2,
+hist= model.fit(x_train, y_train, epochs=700,batch_size=448, validation_split=0.2,verbose=2,
           callbacks=[es]
             )
 
@@ -102,7 +115,7 @@ y_submit = ohe.inverse_transform(y_submit)
 y_submit = pd.DataFrame(y_submit)
 sample_csv["대출등급"]=y_submit
 
-sample_csv.to_csv(path + "sample_submission_2.csv", index=False)
+sample_csv.to_csv(path + "sample_submission_3.csv", index=False)
 
 y_pred= model.predict(x_test)
 y_pred= ohe.inverse_transform(y_pred)
