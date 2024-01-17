@@ -37,7 +37,7 @@ x_train,x_test, y_train, y_test = train_test_split(x,y, train_size=0.9, random_s
 print(x_train.shape,x_test.shape) #(2177, 8) (8709, 8)
 print(y_train.shape, y_test.shape) #(2177,) (8709,)
 
-#2. 모델
+#2. 모델구성
 model = Sequential()
 model.add(Dense(32,input_dim = 8,activation='relu'))
 model.add(Dense(64,activation='relu'))

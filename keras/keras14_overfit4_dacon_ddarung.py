@@ -35,6 +35,8 @@ print(train_csv.describe())
 
 ###### 결측치 처리 1. 제거########
 #print(train_csv.isnull().sum())
+train_isna = train_csv.isna()
+train_isna.sum()
 print(train_csv.isna().sum()) #  위 아래 같음
 train_csv = train_csv.dropna()
 print(train_csv.isna().sum()) #  위 아래 같음
