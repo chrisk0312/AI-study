@@ -78,20 +78,18 @@ x_test= mms.transform(x_test)
 
 #2. 모델구성
 
-model = Sequential()
-model.add(Dense(1, input_dim= 13))
-model.add(Dense(9))
-model.add(Dense(13))
-model.add(Dense(9))
-model.add(Dense(3))
-model.add(Dense(1))
+# model = Sequential()
+# model.add(Dense(1, input_dim= 13))
+# model.add(Dense(9))
+# model.add(Dense(13))
+# model.add(Dense(9))
+# model.add(Dense(3))
+# model.add(Dense(1))
 # model.save("..\_data\_save\keras24_save_model.h5")  #..=상위폴더  #상대경로
 
 #model = load_model("..\_data\_save\keras24_save_model.h5")
-model.save_weights("..\_data\_save\keras24_5_save_weights1.h5")
 
-
-#model = load_model('..\_data\_save\keras24_3_save_model2.h5')
+model = load_model('..\_data\_save\keras24_3_save_model2.h5')
 model.summary()
 
 
@@ -99,12 +97,14 @@ model.summary()
 
 
 # #3. 컴파일, 훈련
-model.compile(loss= 'mse', optimizer= 'adam' ) #mae 2.64084 r2 0.8278   mse 12.8935 r2 0.82
-model.fit(x_train, y_train, epochs= 20, batch_size = 20, validation_split= 0.27)
+# model.compile(loss= 'mse', optimizer= 'adam' ) #mae 2.64084 r2 0.8278   mse 12.8935 r2 0.82
+# start_time = time.time() #현재시간이 들어감
+# model.fit(x_train, y_train, epochs= 20, batch_size = 20, validation_split= 0.27)
+# end_time = time.time()
 
 
 # model.save("..\_data\_save\keras24_3_save_model2.h5")  #..=상위폴더  #상대경로
-model.save_weights("..\_data\_save\keras24_5_save_weights2.h5")
+
 
 #4. 평가, 예측
 results = model.evaluate(x_test, y_test)

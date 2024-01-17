@@ -85,13 +85,7 @@ model.add(Dense(13))
 model.add(Dense(9))
 model.add(Dense(3))
 model.add(Dense(1))
-# model.save("..\_data\_save\keras24_save_model.h5")  #..=상위폴더  #상대경로
 
-#model = load_model("..\_data\_save\keras24_save_model.h5")
-model.save_weights("..\_data\_save\keras24_5_save_weights1.h5")
-
-
-#model = load_model('..\_data\_save\keras24_3_save_model2.h5')
 model.summary()
 
 
@@ -99,12 +93,14 @@ model.summary()
 
 
 # #3. 컴파일, 훈련
+from keras.callbacks import EarlyStopping, ModelCheckpoint
+es = EarlyStopping(monitor = 'val_loss', mode = 'min', patience = 10, verbose = 2, restore_best_weights= True)
+mcp = ModelCheckpoint(monitor='val_loss', mode = 'auto', verbose= 1, save_best_only=True, filepath='../_data/_save/MCP/keras25_MCP1.hdf5')
+
 model.compile(loss= 'mse', optimizer= 'adam' ) #mae 2.64084 r2 0.8278   mse 12.8935 r2 0.82
-model.fit(x_train, y_train, epochs= 20, batch_size = 20, validation_split= 0.27)
+hist = model.fit(x_train, y_train, callbacks=[es,mcp], epochs= 200, batch_size = 20, validation_split= 0.27)
 
 
-# model.save("..\_data\_save\keras24_3_save_model2.h5")  #..=상위폴더  #상대경로
-model.save_weights("..\_data\_save\keras24_5_save_weights2.h5")
 
 #4. 평가, 예측
 results = model.evaluate(x_test, y_test)
@@ -118,6 +114,13 @@ r2 = r2_score(y_test, y_predict)
 print("로스 :", results)
 print("R2 스코어 :", r2)
 #print("걸린 시간 :", round(end_time - start_time, 2), "초") #def로 정의하지 않은 함수는 파이썬에서 기본으로 제공해주는 함수.
+
+print('===================================')
+print(hist.history['val_loss'])
+print('===================================')
+
+
+
 
 #로스 : 13.562579154968262
 #R2 스코어 : 0.8130732165577592

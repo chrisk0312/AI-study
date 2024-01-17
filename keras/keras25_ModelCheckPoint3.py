@@ -92,7 +92,7 @@ es = EarlyStopping(monitor = 'val_loss', mode = 'min', patience = 10, verbose = 
 mcp = ModelCheckpoint(monitor='val_loss', mode = 'auto', verbose= 1, save_best_only=True, filepath='../_data/_save/MCP/keras25_MCP1.hdf5')
 
 model.compile(loss= 'mse', optimizer= 'adam' ) #mae 2.64084 r2 0.8278   mse 12.8935 r2 0.82
-hist = model.fit(x_train, y_train, callbacks=[es,mcp], epochs= 200, batch_size = 20, validation_split= 0.27)
+hist = model.fit(x_train, y_train, callbacks=[es,mcp], epochs= 100, batch_size = 32, validation_split= 0.27)
 
 model.save('c:/_data/_save/keras25_3_save_model.h5')
 
@@ -109,7 +109,7 @@ y_predict = model.predict(x_test)
 r2 = r2_score(y_test, y_predict)
 print("R2 스코어 :", r2)
 
-print("=========================1.load_model=======================")
+print("=========================2.load_model=======================")
 model2 = load_model('c:/_data/_save/keras25_3_save_model.h5')
 loss2 = model2.evaluate(x_test, y_test, verbose=0)
 print("로스 :", loss2)
@@ -117,6 +117,16 @@ print("로스 :", loss2)
 y_predict2 = model.predict(x_test,verbose=0) 
 # result = model.predict(x,verbose=0)
 r2 = r2_score(y_predict2,y_test)
+print("R2 스코어 :", r2)
+
+print("=========================3.MCP 출력=======================")
+model3 = load_model('../_data/_save/MCP/keras25_MCP1.hdf5')
+loss3 = model3.evaluate(x_test, y_test, verbose=0)
+print("로스 :", loss3)
+
+y_predict3 = model.predict(x_test,verbose=0) 
+# result = model.predict(x,verbose=0)
+r2 = r2_score(y_predict3,y_test)
 print("R2 스코어 :", r2)
 
 

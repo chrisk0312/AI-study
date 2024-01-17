@@ -1,4 +1,5 @@
-#23-1 copy
+
+#09-1 copy
 
 
 from sklearn.datasets import load_boston
@@ -76,36 +77,28 @@ x_test= mms.transform(x_test)
 
 
 
-#2. 모델구성
+# #2. 모델구성
 
-model = Sequential()
-model.add(Dense(1, input_dim= 13))
-model.add(Dense(9))
-model.add(Dense(13))
-model.add(Dense(9))
-model.add(Dense(3))
-model.add(Dense(1))
-# model.save("..\_data\_save\keras24_save_model.h5")  #..=상위폴더  #상대경로
-
-#model = load_model("..\_data\_save\keras24_save_model.h5")
-model.save_weights("..\_data\_save\keras24_5_save_weights1.h5")
+# model = Sequential()
+# model.add(Dense(1, input_dim= 13))
+# model.add(Dense(9))
+# model.add(Dense(13))
+# model.add(Dense(9))
+# model.add(Dense(3))
+# model.add(Dense(1))
 
 
-#model = load_model('..\_data\_save\keras24_3_save_model2.h5')
-model.summary()
+# # #3. 컴파일, 훈련
+# from keras.callbacks import EarlyStopping, ModelCheckpoint
+# es = EarlyStopping(monitor = 'val_loss', mode = 'min', patience = 100, verbose = 2, restore_best_weights= True)
+# mcp = ModelCheckpoint(monitor='val_loss', mode = 'auto', verbose= 1, save_best_only=True, filepath='../_data/_save/MCP/keras26_MCP.hdf5')
+
+# model.compile(loss= 'mse', optimizer= 'adam' ) #mae 2.64084 r2 0.8278   mse 12.8935 r2 0.82
+# hist = model.fit(x_train, y_train, callbacks=[es,mcp], epochs= 2000, batch_size = 20, validation_split= 0.27)
 
 
 
-
-
-# #3. 컴파일, 훈련
-model.compile(loss= 'mse', optimizer= 'adam' ) #mae 2.64084 r2 0.8278   mse 12.8935 r2 0.82
-model.fit(x_train, y_train, epochs= 20, batch_size = 20, validation_split= 0.27)
-
-
-# model.save("..\_data\_save\keras24_3_save_model2.h5")  #..=상위폴더  #상대경로
-model.save_weights("..\_data\_save\keras24_5_save_weights2.h5")
-
+model = load_model('../_data/_save/MCP/keras26_01_MCP.hdf5')
 #4. 평가, 예측
 results = model.evaluate(x_test, y_test)
 
@@ -142,5 +135,8 @@ print("R2 스코어 :", r2)
 #로스 : 12.295846939086914
 #R2 스코어 : 0.8305320050569783
 
+
+#로스 : 12.284931182861328
+#R2 스코어 : 0.830682458020847
 
 
