@@ -1,7 +1,7 @@
+#dropout
 from sklearn.datasets import load_boston
-
 from keras.models import Sequential, load_model
-from keras.layers import Dense
+from keras.layers import Dense, Dropout
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
@@ -76,10 +76,10 @@ x_test= mms.transform(x_test)
 #2. 모델구성
 
 model = Sequential()
-model.add(Dense(1, input_dim= 13))
-model.add(Dense(9))
-model.add(Dense(13))
-model.add(Dense(9))
+model.add(Dense(10, input_dim= 13))
+model.add(Dropout(0.2))
+model.add(Dense(50))
+model.add(Dropout(0.3))
 model.add(Dense(3))
 model.add(Dense(1))
 
@@ -98,7 +98,7 @@ print(type(date)) #<class 'str'>
 
 path = '../_data/_save/MCP/'
 filename = '{epoch:04d}-{val_loss:.4f}.hdf5' #1000 - 0.3333.hdf5
-filepath = "".join([path, 'k25_', date,'_', filename])
+filepath = "".join([path, 'k28_01_', date,'_', filename])
 #'../_data/_save/MCP/k25_0117_1058_0101-0.3333.hdf5'
 
 es = EarlyStopping(monitor = 'val_loss', mode = 'min', patience = 10, verbose = 2, restore_best_weights= True)
