@@ -98,7 +98,7 @@ model.summary()
 #3. 컴파일, 훈련
 model.compile(loss= 'mse', optimizer= 'adam' ) #mae 2.64084 r2 0.8278   mse 12.8935 r2 0.82
 start_time = time.time() #현재시간이 들어감
-model.fit(x_train, y_train, epochs= 20, batch_size = 20, validation_split= 0.27)
+model.fit(x_train, y_train, epochs= 2000, batch_size = 20, validation_split= 0.27)
 end_time = time.time()
 
 

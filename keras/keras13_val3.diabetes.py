@@ -44,7 +44,7 @@ model.add(Dense(1))
 #3. 컴파일,훈련
 model.compile(loss="mae", optimizer='adam')
 start_time= time.time()
-model.fit(x_train, y_train, epochs=1000, batch_size=8,
+model.fit(x_train, y_train, epochs=5000, batch_size=4,
           validation_split=0.3,
           verbose=2)
 end_time=time.time()

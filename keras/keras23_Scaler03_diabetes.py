@@ -58,7 +58,7 @@ model.add(Dense(1))
 #3. 컴파일,훈련
 model.compile(loss="mae", optimizer='adam')
 start_time= time.time()
-model.fit(x_train, y_train, epochs=1000, batch_size=8)
+model.fit(x_train, y_train, epochs=100, batch_size=8)
 end_time=time.time()
 
 #4. 평가, 예측

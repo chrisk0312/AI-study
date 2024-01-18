@@ -5,7 +5,7 @@
 #값 자른거 수치화까지!
 
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import Dense, Dropout
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -18,7 +18,7 @@ warnings.filterwarnings(action='ignore')
 
 
 #1. 데이터
-path = "C:\\_data\\daicon\\bank\\"
+path = "C:\\_data\\dacon\\dechul\\"
 
 train_csv = pd.read_csv(path + 'train.csv', index_col= 0)
 #print(train_csv)
@@ -182,11 +182,12 @@ x_test= mms.transform(x_test)
 model = Sequential()
 model.add(Dense(26, input_dim = 13,activation='sigmoid'))
 model.add(Dense(52,))
-
-model.add(Dense(128,))
-model.add(Dense(64, ))
+model.add(Dropout(0.4))
+model.add(Dense(104))
+model.add(Dropout(0.4))
+model.add(Dense(70))
 model.add(Dense(32, activation='relu'))
-model.add(Dense(16,activation='relu'))
+model.add(Dropout(0.6))
 model.add(Dense(7, activation = 'softmax'))
 
 
