@@ -150,13 +150,20 @@ x = train_csv.drop(['대출등급'],axis=1)
 y = train_csv['대출등급']
 
 print(f"{test_csv.shape=}")
-print(np.unique(y,return_counts=True)) #(array([0, 1, 2, 3, 4, 5, 6]), array([16772, 28817, 27622, 13354,  7354,  1954,   420], dtype=int64))
+print(np.unique(y,return_counts=True)) #(array([1, 2, 4, 5, 6]), array([16772, 28817, 27622, 13354,  7354,  1954,   420], dtype=int64))
 
 y = y.to_frame(['대출등급'])
 # y = y.reshape(-1,1)
 ohe = OneHotEncoder(sparse=False)
-y = ohe.fit_transform(y)
+ohe.fit(y)
 
+y = [1,2,3,4,5,6,7]
+y = ohe.transform(y)
+
+# y = ohe.fit_transform(y)
+print(y)
+
+'''
 f1 = 0
 
 r = int(np.random.uniform(1,1000))
@@ -280,3 +287,4 @@ plt.legend()
 
 # CPU Time: 436.51sec
 # GPU Time: 282.74sec
+'''

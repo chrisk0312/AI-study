@@ -30,7 +30,9 @@ y = datasets.target
 # ohe = OneHotEncoder(sparse=False)
 # y = ohe.fit_transform(y.reshape(-1,1))
 print(np.unique(y,return_counts=True))
-y = to_categorical(y)
+y = pd.get_dummies(y)
+
+print(y)
 
 # print(y,y.shape,sep='\n')
 # print(np.count_nonzero(y[:,0]))
@@ -41,7 +43,7 @@ keras   : (581012, 8)
 keras 첫번째 열이 미심직어 찍어보니
 print(np.count_nonzero(y[:,0])) # 0
 따라서 첫번째 열 잘라내고 슬라이싱
-'''
+
 # print(y.shape)
 
 y = y[:,1:]
@@ -138,3 +140,5 @@ plt.show()
 
 # CPU Time: 94.94sec
 # GPU Time: 16.47sec
+
+'''

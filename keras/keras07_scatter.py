@@ -10,7 +10,7 @@ y = np.array([1,2,3,4,6,5,7,8,9,10])
 #[검색] train과 test를 섞어서 7:3으로 자를수 있는 방법 
 #사이킷런
 
-x_train, x_test, y_train, y_test = train_test_split(x,y, test_size=0.3, random_state=11) 
+x_train, x_test, y_train, y_test = train_test_split(x,y, test_size=0.3, shuffle=False) 
 #(괄호 안에 들어가는 것을 파라미터라고 함)
 #train_size = 0.7 ==디폴트 :0.75
 #train_size = 0.3
@@ -20,7 +20,7 @@ print(x_train)
 print(y_train)
 print(x_test)
 print(y_test)
-
+'''
 #2. 모델구성
 model = Sequential()
 model.add(Dense(4, input_dim=1))
@@ -44,3 +44,4 @@ import matplotlib.pyplot as plt
 plt.scatter(x,y)
 plt.plot(x, results, color ='red')
 plt.show()
+'''
