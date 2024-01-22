@@ -16,11 +16,11 @@ a == b # a와 b가 같다
 x_test = x[7:] #[7:10] == [=3:] == [-3:10]
 y_test = y[7:]
 
-print(x_train)
-print(y_train)
-print(x_test)
-print(x_test)
-
+print(x_train) #[1 2 3 4 5 6 7]
+print(y_train) #[1 2 3 4 6 5 7]
+print(x_test) #[ 8  9 10]
+print(x_test) #[ 8  9 10]
+'''
 #2. 모델구성
 model = Sequential()
 model.add(Dense(10, input_dim=1))
@@ -38,3 +38,4 @@ loss = model.evaluate(x_test,y_test)
 results = model.predict([1])
 print("로스 :", loss)
 print("[1]의 예측값 :", results)
+'''

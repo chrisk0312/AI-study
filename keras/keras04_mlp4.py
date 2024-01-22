@@ -5,11 +5,11 @@ from keras.layers import Dense
 #pip install numpy
 #1.데이터
 x = np.array([range(10)])
-print(x) 
-print(x.shape) 
+print(x) # [[0 1 2 3 4 5 6 7 8 9]]
+print(x.shape) #(1, 10)
 x=x.T
 print(x)
-print(x.shape)
+print(x.shape) #(10, 1)
 
 y= np.array([[1,2,3,4,5,6,7,8,9,10],
             [1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9],
@@ -17,7 +17,7 @@ y= np.array([[1,2,3,4,5,6,7,8,9,10],
 
 y=y.T
 
-
+'''
 #2. 모델구성
 model = Sequential()
 model.add(Dense(11, input_dim=1))
@@ -40,3 +40,4 @@ print("[10]의 예측값 :", results)
 # 예측:[10,31,211]
 # 로스 : 2.610966998162212e-13
 # [10]의 예측값 : [[11.          1.9999992  -0.99999934]]
+'''

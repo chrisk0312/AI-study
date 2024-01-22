@@ -16,11 +16,11 @@ x_train, x_test, y_train, y_test = train_test_split(x,y, test_size=0.3, random_s
 #train_size = 0.3
 #shuffle =false == #디폴트 : true
 #random_state =123,
-print(x_train)
-print(y_train)
-print(x_test)
-print(y_test)
-
+print(x_train) #[ 7  5  6  2  4  1 10]
+print(y_train) #[ 7  6  5  2  4  1 10]
+print(x_test) #[8 9 3]
+print(y_test) #[8 9 3]
+'''
 #2. 모델구성
 model = Sequential()
 model.add(Dense(4, input_dim=1))
@@ -38,3 +38,4 @@ loss= model.evaluate(x_test,y_test)
 results = model.predict([1])
 print("로스 :", loss)
 print("[1]의 예측값 :", results)
+'''

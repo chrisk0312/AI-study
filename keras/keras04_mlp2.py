@@ -15,6 +15,10 @@ print(x)
 print(x.shape, y.shape) #(3,10) (10,)
 x=x.T
 print(x.shape) #(10,3)
+print(x)
+# [ 1.   1.   9. ],  [ 2.   1.1  8. ],  [ 3.   1.2  7. ]...
+print(y)
+#[ 1  2  3  4  5  6  7  8  9 10]
 
 #2. 모델구성
 model = Sequential()
@@ -30,7 +34,7 @@ model.fit(x,y, epochs=100, batch_size =1)
 
 #4. 평가,예측
 loss = model.evaluate(x,y)
-results = model.predict([[10,1.3,0]])
+results = model.predict([[8,1.5,2]])
 print("로스 :", loss)
 print("[10,1.3,0]의 예측값 :", results)
 
