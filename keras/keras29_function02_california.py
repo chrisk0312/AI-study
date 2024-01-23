@@ -1,6 +1,6 @@
 from sklearn.datasets import fetch_california_housing
-from keras.models import Sequential, Model
-from keras.layers import Dense, Dropout, Input
+from keras.models import Model
+from keras.layers import Dense, Dropout, Input 
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
@@ -42,16 +42,18 @@ x_test = scaler.transform(x_test)
 # model.add(Dense(8,activation='relu'))
 # model.add(Dense(1))
 
-input = Input(shape=(8,))
-d1 = Dense(64, activation='relu')(input)
-drop1 = Dropout(0.2)(d1)
-d2 = Dense(32, activation='relu')(drop1)
-drop2 = Dropout(0.2)(d2)
-d3 = Dense(16, activation='relu')(drop2)
-d4 = Dense(8, activation='relu')(d3)
-output = Dense(1)(d4)
+#함수형
 
-model = Model(inputs=input,outputs=output)
+input= Input(shape=(8,)) 
+dense1 = Dense(32)(input)
+dense2 = Dense(64)(dense1)
+output= Dense(1)(dense2)
+model = Model(inputs=input, outputs= output)
+
+
+
+
+
 
 #compile fit
 model.compile(loss='mse',optimizer='adam',metrics=['mse'])
