@@ -2,6 +2,8 @@ import numpy as np
 from keras.models import Sequential
 from keras.layers import Dense
 from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
+
 
 #1.데이터
 x = np.array([1,2,3,4,5,6,7,8,9,10])
@@ -16,11 +18,11 @@ x_train, x_test, y_train, y_test = train_test_split(x,y, test_size=0.3, shuffle=
 #train_size = 0.3
 #shuffle =false == #디폴트 : true
 #random_state =123,
-print(x_train)
-print(y_train)
-print(x_test)
-print(y_test)
-'''
+print(x_train) #[1 2 3 4 5 6 7]
+print(y_train) #[1 2 3 4 6 5 7]
+print(x_test) #[ 8  9 10]
+print(y_test) #[ 8  9 10]
+
 #2. 모델구성
 model = Sequential()
 model.add(Dense(4, input_dim=1))
@@ -39,9 +41,8 @@ results = model.predict([x])
 print("로스 :", loss)
 print("[11]의 예측값 :", results)
 
-import matplotlib.pyplot as plt
+
 
 plt.scatter(x,y)
 plt.plot(x, results, color ='red')
 plt.show()
-'''

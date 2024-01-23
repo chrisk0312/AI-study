@@ -14,8 +14,8 @@ y = datasets.target
 
 print(x)
 print(y)
-print(x.shape,y.shape)
-
+print(x.shape,y.shape) #(442, 10) (442,)
+'''
 print(datasets.feature_names)
 print (datasets.DESCR)
 
@@ -106,3 +106,4 @@ plt.show()
 # 로스: 2298.30810546875
 # R2스코어 : 0.5859864202879512
 # RMSE 47.9406734109984
+'''

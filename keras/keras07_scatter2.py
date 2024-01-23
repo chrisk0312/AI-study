@@ -2,6 +2,7 @@ import numpy as np
 from keras.models import Sequential
 from keras.layers import Dense
 from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
 
 #1.데이터
 x = np.array([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20])
@@ -31,7 +32,7 @@ results = model.predict([x])
 print("로스 :", loss)
 print("[x]의 예측값 :", results)
 
-import matplotlib.pyplot as plt
+
 
 plt.scatter(x,y)
 #plt.plot(x, results, color ='red')
