@@ -10,10 +10,10 @@ import time as tm
  #1
 np_path= 'c:/_data/_save_npy/'
 
-x_train= np.load(np_path + 'keras39_1_x_train.npy')
-y_train= np.load(np_path + 'keras39_1_y_train.npy')
+x_train = np.load(np_path + 'keras39_catDog_x_train.npy')
+y_train = np.load(np_path + 'keras39_catDog_y_train.npy')
+test = np.load(np_path + 'keras39_catDog_test.npy')
 
-print(x_train.shape, y_train.shape)#(160, 100, 100, 1) (160,)
 
 x_train, y_train, x_test, y_test = train_test_split(x_train, y_train, test_size=0.3)
 
@@ -43,15 +43,24 @@ import time as tm
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['acc'])
 startTime = tm.time()
 model.fit(x_train,y_train, 
-          steps_per_epoch=16,
+        #   steps_per_epoch=16,
           epochs= 100, 
           batch_size= 10, 
           validation_split= 0.2, 
           callbacks=[es])
 endTime = tm.time()
 
+
+
 #평가 예측
 loss = model.evaluate(x_test, y_test)
 print('loss : ', loss[0])
 print('acc : ', loss[1])
 print('time :', np.round(endTime - startTime, 2) ,"sec")
+
+
+
+
+submit = model.predict(test)
+
+

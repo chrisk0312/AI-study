@@ -26,13 +26,13 @@ model.add(Dense(1))
 
 #3.
 model.compile(loss='mse',optimizer='adam')
-model.fit(x_train,y_train, epochs=300, batch_size =1,
+model.fit(x_train,y_train, epochs=300, batch_size =1,verbose=3,
           validation_data=(x_val,y_val))
 
 #4. 평가,예측
 loss = model.evaluate(x_test,y_test)
-results = model.predict([11000,7])
+results = model.predict([7])
 print("로스 :", loss)
-print("[11000]의 예측값 :", results)
+print("[7]의 예측값 :", results)
 #로스 : 0.09967684745788574
 # [11000]의 예측값 : [[1.0449473e+04],[6.7870612e+00]]

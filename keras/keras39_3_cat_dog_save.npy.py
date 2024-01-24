@@ -1,57 +1,70 @@
 from keras.preprocessing.image import ImageDataGenerator
 import numpy as np
+
+
 xy_traingen =  ImageDataGenerator(
     rescale=1./255,
-    horizontal_flip=True,
-    vertical_flip=True,
-    width_shift_range= 0.1,
-    height_shift_range= 0.1,
-    rotation_range=5,       
-    zoom_range=1.2,         
-    shear_range=0.7,      
-    fill_mode=''
+    # horizontal_flip=True,
+    # vertical_flip=True,
+    # width_shift_range= 0.1,
+    # height_shift_range= 0.1,
+    # rotation_range=5,       
+    # zoom_range=1.2,         
+    # shear_range=0.7,      
+    # fill_mode=''
 )
+test_datagen = ImageDataGenerator(
+    rescale=1./255
+    )
 
 
-path_train ='c:/_data/image/cat-and-dog/train/'
-path_test ='c:/_data/image/cat_and_dog/test/'
+path_train ='c:/_data/image/cat_and_dog/train//'
+path_test ='c:/_data/image/cat_and_dog/test//'
 
 xy_train = xy_traingen.flow_from_directory(
     path_train,
-    batch_size=1000,
+    batch_size=19995,
     target_size=(100,100),
     class_mode='binary',
     color_mode='rgb',
     shuffle=True
 )
 
-xy_test = xy_traingen.flow_from_directory(
+xy_test = test_datagen.flow_from_directory(
     path_test,
-    batch_size=1000,
+    batch_size=5000,
     target_size=(100,100),
     class_mode='binary',
     color_mode='rgb',
-    shuffle= True,
+    # shuffle= True,
     )
 
-print(xy_train)
-print(xy_train[0][0].shape) #(160, 100, 100, 1)
-print(xy_train[0][1].shape) #(160,)
+X_train = xy_train[0][0] 
+y_train = xy_train[0][1]
+
+test = xy_test[0][0]
+
+# print(xy_train[0][1]) 
+
+# print(xy_train[0][1].shape) 
 
 # print(xy_test[0][0].shape) #(160, 100, 100, 1)
 # print(xy_test[0][1].shape) #(160,)
 
-for data_batch, labels_batch in xy_train:
-    print("Data batch shape:", data_batch.shape)
-    print("Labels batch shape:", labels_batch.shape)
-    break
-'''
-np_path= 'c:/_data/_save_npy/'
-np.save(np_path + 'keras39_3_x_train.npy',arr= xy_train[0][0])
-np.save(np_path + 'keras39_3_y_train.npy',arr= xy_train[0][1])
+# for data_batch, labels_batch in xy_train:
+#     print("Data batch shape:", data_batch.shape)
+#     print("Labels batch shape:", labels_batch.shape)
+#     break
+    
+np_path = 'c:/_data/_save_npy/'
+np.save(np_path + 'keras39_catDog_x_train.npy', arr=X_train)
+np.save(np_path + 'keras39_catDog_y_train.npy', arr= y_train)
+np.save(np_path + 'keras39_catDog_test.npy', arr=test)
+
 # np.save(np_path + 'keras39_3_x_test.npy',arr= xy_test[0][0])
 # np.save(np_path + 'keras39_3_y_test.npy',arr= xy_test[0][1])
 
+'''
 #모델구성
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Conv2D, Flatten, MaxPooling2D

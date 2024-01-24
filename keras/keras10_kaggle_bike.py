@@ -23,6 +23,11 @@ print(test_csv.shape) #(6493, 8)
 print(submission_csv.shape) #(6493, 2)
 print(train_csv.columns) #Index(['season', 'holiday', 'workingday', 'weather', 'temp', 'atemp',
                         #'humidity', 'windspeed', 'casual', 'registered', 'count'],
+print(test_csv.columns) 
+# Index(['season', 'holiday', 'workingday', 'weather', 'temp', 'atemp',
+#        'humidity', 'windspeed'],
+                        
+
 print(train_csv.info())
 print(test_csv.info())
 print(train_csv.describe())
@@ -33,7 +38,7 @@ print(x)
 y = train_csv['count']
 print(y)
 
-x_train,x_test, y_train, y_test = train_test_split(x,y, train_size=0.9, random_state=100,)
+x_train,x_test, y_train, y_test = train_test_split(x,y, train_size=0.7, random_state=100,)
 print(x_train.shape,x_test.shape) #(2177, 8) (8709, 8)
 print(y_train.shape, y_test.shape) #(2177,) (8709,)
 
@@ -60,24 +65,21 @@ print('===================================')
 submission_csv['count'] = y_submit
 print(submission_csv)
 print(submission_csv.shape) #(6493, 2)
-submission_csv.to_csv(path+"submission_0108_03.csv", index= False)
+submission_csv.to_csv(path+"submission_0124_1.csv", index= False)
 print("MSE :", loss)
 
 ################################
 print("음수갯수:", submission_csv[submission_csv['count']<0].count())
 y_predict = model.predict(x_test)
 r2 =r2_score(y_test,y_predict)
+
 def RMSE(y_test, y_predict):
     return(np.sqrt(mean_squared_error(y_test,y_predict)))
 rmse =RMSE(y_test, y_predict)
 print("RMSE :",rmse)
 print("R2 스코어:", r2)
-'''
+
 def RMSLE(y_test, y_predict):
     return(np.sqrt(mean_squared_log_error(y_test,y_predict)))
 rmsle = RMSLE(y_test, y_predict)
 print("RMSLE :", rmsle)
-'''
-
-#RMSE : 150.26206291550542
-#R2 스코어: 0.2763171223075017

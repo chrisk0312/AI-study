@@ -8,10 +8,14 @@ from keras.layers import Dense
 #y = np.array([1,2,3,4,6,5,7,8,9,10])
 
 x_train = np.array([1,2,3,4,5,6,7])
-y_train = np.array([1,2,3,4,6,5,7])
+y_train = np.array([31,32,33,34,35,36,37])
+# y_train = np.array([1,2,3,4,5,6,7])
+
 
 x_test = np.array([8,9,10])
-y_test = np.array([8,9,10])
+# y_test = np.array([8,9,10])
+y_test = np.array([38,39,40])
+
 
 #2. 모델구성
 model = Sequential()
@@ -23,7 +27,7 @@ model.add(Dense(1))
 
 #3.
 model.compile(loss='mse',optimizer='adam')
-model.fit(x_train,y_train, epochs=100, batch_size =1,
+model.fit(x_train,y_train, epochs=1000, batch_size =1,
           verbose=3)
 # verbose=0 : 침묵
 # verbose=1 : 디폴트
@@ -32,9 +36,10 @@ model.fit(x_train,y_train, epochs=100, batch_size =1,
 
 #4. 평가,예측
 loss = model.evaluate(x_test,y_test)
-results = model.predict([11000,7])
+y_predict= model.predict([11])#x_test를 집어넣어
+print(y_predict)
 print("로스 :", loss)
-print("[11000]의 예측값 :", results)
-#로스 : 0.09967684745788574
-# [11000]의 예측값 : [[1.0449473e+04],[6.7870612e+00]]
+# print("[11]의 예측값 :", )
+#로스 : 0.005348272621631622
+# [11]의 예측값 : [[40.9038]]
 
