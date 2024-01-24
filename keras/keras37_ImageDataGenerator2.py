@@ -1,10 +1,9 @@
 import numpy as np
 from keras.preprocessing.image import ImageDataGenerator
-from keras.layers import Dense, Dropout, Input
 from keras.models import Sequential
 from keras.callbacks import EarlyStopping
 from keras.callbacks import ModelCheckpoint
-from keras.layers import Dense, Conv2D, Flatten 
+from keras.layers import Dense, Conv2D, Flatten, MaxPooling2D, Dropout, BatchNormalization 
 
 train_datagen = ImageDataGenerator(
     rescale=1./255,
@@ -68,7 +67,6 @@ print(np.unique(np.array,return_counts=True))
 print(np.unique(y_test, return_counts=True))
 
 #2. 모델구성
-input= Input(shape=(200, 200, 3))
 model = Sequential()
 model.add(Conv2D(9,(2,2), input_shape =(200, 200, 3)))     
 model.add(Conv2D(filters=10, kernel_size=(3,3)))

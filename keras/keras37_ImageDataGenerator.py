@@ -26,6 +26,7 @@ xy_train=train_datagen.flow_from_directory(
     target_size=(200,200),
     batch_size=160, #160이상을 쓰면 x통데이터로 가져올수 있다
     class_mode= 'binary',
+    color_mode= 'grayscale',
     shuffle= True
 ) 
 print(xy_train)
@@ -36,6 +37,7 @@ xy_test=test_datagen.flow_from_directory(
     target_size=(200,200),
     batch_size=10,
     class_mode= 'binary',
+    color_mode= 'grayscale',
 )
 print(xy_test)
 print(xy_train.next())
