@@ -10,17 +10,19 @@ import numpy as np
 from keras.models import Sequential
 from keras.layers import Dense
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import r2_score
+import matplotlib.pyplot as plt
 
 #1.데이터
 x = np.array([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20])
 y = np.array([1,2,4,3,5,7,9,3,8,12,13,8, 14,15,9, 6, 17,23,21,20])
 
-x_train, x_test, y_train, y_test = train_test_split(x,y, test_size=0.25, random_state=100)
+x_train, x_test, y_train, y_test = train_test_split(x,y, test_size=0.25, shuffle= False, random_state=100)
 
-print(x_train)
-print(y_train)
-print(x_test)
-print(y_test)
+print(x_train) #[ 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15]
+print(y_train) #[ 1  2  4  3  5  7  9  3  8 12 13  8 14 15  9]
+print(x_test) #[16 17 18 19 20]
+print(y_test) #[ 6 17 23 21 20]
 
 #2. 모델구성
 model = Sequential()
@@ -42,11 +44,10 @@ print("로스 :", loss)
 y_predict = model.predict(x_test)
 results = model.predict(x)
 
-from sklearn.metrics import r2_score
 r2= r2_score(y_test, y_predict)
 print ("R2 스코어 :",r2)
 
-import matplotlib.pyplot as plt
+
 plt.scatter(x,y)
 #plt.plot(x, results, color ='red')
 plt.scatter(x, results, color ='red')

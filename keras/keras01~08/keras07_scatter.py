@@ -37,9 +37,9 @@ model.fit(x_train,y_train,epochs=100,batch_size=1)
 
 #4. 평가,예측
 loss= model.evaluate(x_test,y_test)
-results = model.predict([x])
-print("로스 :", loss)
-print("[11]의 예측값 :", results)
+results = model.predict([x]) 
+print("로스 :", loss) #로스 : 0.051522135734558105
+print("[x]의 예측값 :", results) #[x]의 예측값 : [[1.1373942]
 
 
 
