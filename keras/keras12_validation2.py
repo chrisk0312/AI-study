@@ -31,6 +31,6 @@ model.fit(x_train, y_train, epochs=100, batch_size=16,
 
 #4. 평가, 예측
 loss = model.evaluate(x_test,y_test)
-results = model.predict([18])
+results = model.predict([19])
 print("로스:", loss)
 print("[18]의 예측값:", results)
