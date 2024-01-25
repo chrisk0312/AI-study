@@ -9,8 +9,8 @@ from sklearn.metrics import accuracy_score
 
 np_path = 'c:/_data/_save_npy/'
 
-x_train = np.load(np_path + 'keras39_horse_human_x_train.npy')
-y_train = np.load(np_path + 'keras39_horse_human_y_train.npy')
+x_train = np.load(np_path + 'keras39_horse_human2_x_train.npy')
+y_train = np.load(np_path + 'keras39_horse_human2_y_train.npy')
 
 x_train, x_test, y_train, y_test =  train_test_split(x_train, y_train, train_size= 0.8, random_state=777)
 
