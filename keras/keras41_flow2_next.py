@@ -38,6 +38,8 @@ print(np.unique(x_data[1], return_counts=True)) #(array([0.]), array([100], dtyp
 print (x_data[0][0].shape)
 
 
+
+
 plt.figure(figsize=(7,7))
 for i in range(49):
     plt.subplot (7,7,i+1)
