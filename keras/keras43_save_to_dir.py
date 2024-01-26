@@ -101,7 +101,7 @@ es = EarlyStopping(monitor = 'val_loss', mode = 'auto', patience = 200, verbose 
 mcp = ModelCheckpoint(monitor='val_loss', mode = 'auto', verbose= 1, save_best_only=True, filepath= filepath)
 
 start_time = time.time()
-model.fit(x_train, y_train, batch_size = 1024, verbose=3, epochs= 100, validation_data= (x_valid, y_valid), callbacks= [es, mcp])
+model.fit(x_train, y_train, batch_size = 4096, verbose=3, epochs= 100, validation_data= (x_valid, y_valid), callbacks= [es, mcp])
 end_time = time.time()
 
 #4. 평가, 예측
