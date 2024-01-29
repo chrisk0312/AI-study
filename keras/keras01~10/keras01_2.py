@@ -5,6 +5,7 @@ import numpy as np
 #1. 데이터
 x = np.array([1,2,3,4,5,6])
 y = np.array([1,2,3,5,4,6])
+#요 데이터를 훈련해서 최소의 loss를 맹그러봐!!!
 
 #2. 모델구성
 model = Sequential()    #
@@ -12,7 +13,7 @@ model.add(Dense(1, input_dim=1))
 
 #3. 컴파일,훈련
 model.compile(loss='mse', optimizer='adam')
-model.fit(x,y, epochs=9000)  
+model.fit(x,y, epochs=9000)  #최적의 웨이트가 생성
 
 #4. 평가, 예측
 loss = model.evaluate(x,y)
