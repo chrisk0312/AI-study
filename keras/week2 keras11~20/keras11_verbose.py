@@ -1,4 +1,4 @@
-#06.1 카피
+#06.1 copy
 import numpy as np
 from keras.models import Sequential
 from keras.layers import Dense
@@ -36,7 +36,7 @@ model.fit(x_train,y_train, epochs=1000, batch_size =1,
 
 #4. 평가,예측
 loss = model.evaluate(x_test,y_test)
-y_predict= model.predict([11])#x_test를 집어넣어
+y_predict= model.predict([11])# insert x_test
 print(y_predict)
 print("로스 :", loss)
 # print("[11]의 예측값 :", )

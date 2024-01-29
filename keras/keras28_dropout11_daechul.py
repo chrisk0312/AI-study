@@ -180,13 +180,13 @@ x_test= mms.transform(x_test)
 #2. 모델구성
 
 model = Sequential()
-model.add(Dense(26, input_dim = 13,activation='sigmoid'))
-model.add(Dense(52, activation='relu'))
-model.add(Dropout(0.4))
+model.add(Dense(52, input_dim = 13,activation='sigmoid'))
 model.add(Dense(104, activation='relu'))
 model.add(Dropout(0.4))
 model.add(Dense(208, activation='relu'))
-model.add(Dense(32, activation='relu'))
+model.add(Dropout(0.4))
+model.add(Dense(516, activation='relu'))
+model.add(Dense(77, activation='relu'))
 model.add(Dropout(0.6))
 model.add(Dense(7, activation = 'softmax'))
 
@@ -200,11 +200,11 @@ test_csv = np.asarray(test_csv).astype(np.float32)
 
 
 from keras.callbacks import EarlyStopping, ModelCheckpoint
-es = EarlyStopping(monitor = 'val_loss', mode = 'min', patience = 400, verbose = 0, restore_best_weights= True)
+es = EarlyStopping(monitor = 'val_loss', mode = 'min', patience = 4000, verbose = 0, restore_best_weights= True)
 mcp = ModelCheckpoint(monitor='val_loss', mode = 'auto', verbose= 1, save_best_only=True, filepath='../_data/_save/MCP/keras26_11_MCP1.hdf5')
 
 model.compile(loss= 'mse', optimizer= 'adam', metrics= 'acc' ) #mae 2.64084 r2 0.8278   mse 12.8935 r2 0.82
-hist = model.fit(x_train, y_train, callbacks=[es,mcp], epochs= 50000, batch_size = 5000, validation_split= 0.2)
+hist = model.fit(x_train, y_train, callbacks=[es,mcp], epochs= 100000, batch_size = 500, validation_split= 0.2)
 
 
 #4. 평가, 예측
