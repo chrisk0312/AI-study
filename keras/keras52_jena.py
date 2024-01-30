@@ -11,51 +11,67 @@ from sklearn.neural_network import MLPRegressor
 from sklearn.metrics import r2_score
 
 #data
-path = pd.read_csv('c:\\_data\\kaggle\\jena\\jena_climate_2009_2016.csv')
-x = path
-y = path['T (degC)'] 
-x_timesteps = []
-y_timesteps = []
-k=24
-for i in range(len(x)-k):
-    x_timesteps.append(x.iloc[i:i+k].values)
-    y_timesteps.append(y.iloc[i+k])
+data = pd.read_csv('c:\\_data\\kaggle\\jena\\jena_climate_2009_2016.csv', index_col=0)
+x = data
+y = data['T (degC)']
+print(data.shape) #(420551, 14)
+# data = np.transpose(data)
+# print(data.shape) #(14, 420551)
+time_steps = 4
+def split_xy(data, time_steps, y_column):
+    x,y = list(),list()
+    for i in range(len(data) - time_steps):
+        # x_end_number = i +time_steps
+        # y_end_number = x_end_number + y_column
+        # if y_end_number > len(data):
+        #     break
+        # tmp_x = data[i:x_end_number, :]
+        # tmp_y = data[x_end_number: y_end_number, :]
+        x.append(data[i :i+time_steps])
+        y.append(data.iloc[i+time_steps][y_column])
+    return np.array(x), np.array(y)
 
-X_timesteps = np.asarray(x_timesteps)
-y_timesteps = np.asarray(y_timesteps)
-print(X_timesteps.shape) #(420527, 24, 2)
-X_timesteps=X_timesteps.reshape((X_timesteps.shape[0], -1))
-print(X_timesteps.shape) #(420527, 48)
 
-x_train, x_test, y_train, y_test = train_test_split(X_timesteps, y_timesteps, test_size=0.25, random_state=42)
+
+x,y = split_xy(data,time_steps,'T (degC)')
+print(x, '\n', y)
+print(x.shape) #(420547, 4, 14)
+print(y.shape) #(420547,)
+
+
+    
+
+
+
+
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.7, shuffle= False)
 
 # model
 model = Sequential()
-model.add(Dense(800, input_dim = 8, activation='relu'))
-
-model.add(Dense(600, ))
-model.add(Dense(400, ))
-
-model.add(Dense(200, ))
-model.add(Dense(128, ))
-model.add(Dense(64, ))
-model.add(Dense(32, ))
-model.add(Dense(8, activation='relu'))
+model.add(LSTM(256, input_shape=(4,14) , activation='relu'))
+model.add(Dense(128,activation='relu'))
+model.add(Dense(56,activation='relu'))
+model.add(Dense(28,activation='relu'))
 model.add(Dense(1))
 
 #compile & fit
 start_time = time.time()
-model.compile(loss='mse',optimizer='adam',metrics=['mse'])
-es = EarlyStopping(monitor='val_loss',mode='min',patience=30,verbose=1,restore_best_weights=True)
-from keras.callbacks import ModelCheckpoint
-mcp = ModelCheckpoint(monitor='val_loss',mode='min',save_best_only=True,
-                      filepath="c:/_data/_save/MCP/kaggle_bike/K28_"+"{epoch:04d}{val_loss:.4f}.hdf5")
-hist = model.fit(x_train,y_train,epochs=123,batch_size=32,verbose=2,validation_split=0.3)#,callbacks=[es,mcp])
-end_time = time.time()
-#evaluate & predict 
-loss = model.evaluate(x_test,y_test,verbose=0)
-y_predict = model.predict(x_test)
-r2 = r2_score(y_test,y_predict)
-y_submit = model.predict(y)
+model.compile(loss='mse',optimizer='adam',metrics=['acc'])
+es = EarlyStopping(monitor='loss',mode='min',patience=30,verbose=1,restore_best_weights=True)
+model.fit(x_train,y_train, epochs = 10 , batch_size= 800 , validation_split= 0.2, verbose= 2 ,callbacks=[es])
 
-print(f"Time: {round(end_time-start_time,2)}sec")
+from keras.callbacks import ModelCheckpoint
+end_time = time.time()
+
+
+
+loss = model.evaluate(x_test,y_test)
+y_predict = model.predict(x_test)
+
+r2 = r2_score(y_test,y_predict)
+
+print('loss',loss[0])
+print('r2', r2)
+
+#loss 1.949489951133728
+# r2 0.9704593772050253
