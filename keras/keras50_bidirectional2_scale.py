@@ -1,6 +1,6 @@
 import numpy as np
 from keras.models import Sequential
-from keras.layers import Dense, SimpleRNN, LSTM
+from keras.layers import Dense, SimpleRNN, LSTM, Bidirectional
 
 #1. 데이터
 x = np.array([[1,2,3], [2,3,4], [3,4,5], [4,5,6],
@@ -18,7 +18,7 @@ print(x.shape, y.shape) #(13, 3, 1) (13,)
 
 #2 
 model= Sequential()
-model.add(LSTM(units=10, input_shape =(3,1)))
+model.add(Bidirectional (LSTM(units=10), input_shape =(3,1)))
 model.add(Dense(32))
 model.add(Dense(64))
 model.add(Dense(128))
@@ -28,7 +28,7 @@ model.add(Dense(1))
 
 #3
 model.compile(loss='mse', optimizer='adam')
-model.fit(x,y, epochs=1000)
+model.fit(x,y, epochs=10000)
 
 results= model.evaluate(x,y)
 print('loss', results)
