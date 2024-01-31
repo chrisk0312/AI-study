@@ -10,6 +10,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.neural_network import MLPRegressor
 from sklearn.metrics import r2_score
 
+
 #data
 data = pd.read_csv('c:\\_data\\kaggle\\jena\\jena_climate_2009_2016.csv', index_col=0)
 x = data
@@ -70,8 +71,10 @@ y_predict = model.predict(x_test)
 
 r2 = r2_score(y_test,y_predict)
 
+
 print('loss',loss[0])
 print('r2', r2)
+
 
 #loss 1.949489951133728
 # r2 0.9704593772050253
