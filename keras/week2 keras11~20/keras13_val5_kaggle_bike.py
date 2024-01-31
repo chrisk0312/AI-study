@@ -5,9 +5,13 @@ import pandas as pd
 from keras.models import Sequential
 from keras.layers import Dense
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import r2_score,mean_squared_error,mean_squared_log_error
+from sklearn.metrics import r2_score,mean_squared_error
 
 #1 데이터
+
+# NumPy is focused on numerical computing with arrays, 
+# while Pandas is designed for data manipulation and analysis with labeled tabular data structures.
+# Pandas providing a higher-level interface built on top of NumPy's array operations.
 
 path = "c:\_data\kaggle\\bike\\"
 
@@ -74,21 +78,6 @@ def RMSE(y_test, y_predict):
 rmse =RMSE(y_test, y_predict)
 print("RMSE :",rmse)
 print("R2 스코어:", r2)
-'''
-def RMSLE(y_test, y_predict):
-    return(np.sqrt(mean_squared_log_error(y_test,y_predict)))
-rmsle = RMSLE(y_test, y_predict)
-print("RMSLE :", rmsle)
-'''
 
-#RMSE : 150.26206291550542
-#R2 스코어: 0.2763171223075017
-
-# RMSE : 150.1618524006552
-# R2 스코어: 0.27728205583989307
-
-# RMSE : 155.41259011172468
-# R2 스코어: 0.22585555722090656
-
-#RMSE : 150.55822806250129
-#R2 스코어: 0.2734615663199157
+# RMSE : 154.1324128446603
+# R2 스코어: 0.2385567208765481

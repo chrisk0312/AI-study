@@ -42,7 +42,7 @@ train_csv = train_csv.dropna()
 print(train_csv.isna().sum()) #  위 아래 같음
 print(train_csv.info())
 print(train_csv.shape) # (1328, 10)
-
+'''
 test_csv = test_csv.fillna(test_csv.mean())
 print(test_csv.info()) #  715 non-null
 
@@ -127,3 +127,4 @@ plt.xlabel('에포')
 plt.ylabel('로스')
 plt.grid()
 plt.show()
+'''

@@ -1,11 +1,4 @@
 from sklearn.datasets import fetch_california_housing
-import numpy as np
-from keras.models import Sequential
-from keras.layers import Dense
-from sklearn.model_selection import train_test_split
-import time
-from keras.callbacks import EarlyStopping
-
 
 #1.데이터
 datasets = fetch_california_housing()
@@ -22,6 +15,12 @@ print(datasets.DESCR)
 # [실습]
 # R2 0.55~0.6이상
 
+import numpy as np
+from keras.models import Sequential
+from keras.layers import Dense
+from sklearn.model_selection import train_test_split
+import time
+from keras.callbacks import EarlyStopping
 
 #1 데이터
 x = np.array(datasets.data)

@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score,mean_squared_error,mean_squared_log_error
 import time
 from keras.callbacks import EarlyStopping
-
+import matplotlib.pyplot as plt
 #1 데이터
 
 path = "c:\_data\kaggle\\bike\\"
@@ -99,7 +99,7 @@ print("RMSE :",rmse)
 print("R2 스코어:", r2)
 print("걸린시간:", round (end_time - start_time,2), "초")
 
-import matplotlib.pyplot as plt
+
 plt.rcParams['font.family'] = 'Malgun Gothic'
 plt.figure(figsize=(10,10))
 plt.plot(hist.history['loss'],c='red',label = 'loss',marker=".")

@@ -4,7 +4,8 @@ from keras.models import Sequential
 from keras.layers import Dense
 from sklearn.model_selection import train_test_split
 import time
-
+from sklearn.metrics import r2_score, mean_squared_error
+import matplotlib.pyplot as plt
 
 #1 데이터
 datasets = load_diabetes()
@@ -25,10 +26,10 @@ x_train, x_test, y_train, y_test = train_test_split(
     x,y, test_size=0.1, shuffle=False, random_state=100
 )
  
-print(x_train)
-print(y_train) 
-print(x_test) 
-print(y_test) 
+print(x_train.shape) #(397, 10)
+print(y_train.shape) #(397,)
+print(x_test.shape) #(45, 10)
+print(y_test.shape) #(45,)
 
 #2. 모델구성
 model = Sequential()
@@ -53,7 +54,7 @@ print("로스:", loss)
 y_predict = model.predict(x_test)
 results= model.predict(x)
 
-from sklearn.metrics import r2_score, mean_squared_error
+
 r2 = r2_score(y_test, y_predict)
 
 def RMSE(aaa,bbb):
@@ -79,7 +80,7 @@ print("R2 스코어 :",r2)
 print("걸린시간:", round (end_time - start_time,2), "초")
 
 
-import matplotlib.pyplot as plt
+
 plt.rcParams['font.family'] = 'Malgun Gothic'
 plt.figure(figsize=(10,10))
 plt.plot(hist.history['loss'],c='red',label = 'loss',marker=".")

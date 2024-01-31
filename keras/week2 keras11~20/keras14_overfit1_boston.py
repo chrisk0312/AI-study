@@ -1,8 +1,14 @@
 #09.1 카피
 import warnings
 warnings.filterwarnings('ignore')
-
+import numpy as np
+from keras.models import Sequential
+from keras.layers import Dense
+from sklearn.model_selection import train_test_split
 from sklearn.datasets import load_boston 
+import matplotlib.pyplot as plt
+from sklearn.metrics import r2_score, mean_squared_error
+
 #현재 사이킷 런 버전 1.3.0(pip uninstall scikit-learn, scikit-learn-intelex, scikit-image)
 #pip install scikit-learn==0.23.2
 #pip install scikit-learn==1.1.3
@@ -25,10 +31,6 @@ print(datasets.DESCR)
 # train_size 0.7이상, 0.9이하
 # R2 0.62 이상 
 
-import numpy as np
-from keras.models import Sequential
-from keras.layers import Dense
-from sklearn.model_selection import train_test_split
 
 #1 데이터
 x = np.array(datasets.data)
@@ -64,7 +66,7 @@ print("로스 :", loss)
 y_predict = model.predict(x_test)
 results = model.predict(x)
 
-from sklearn.metrics import r2_score, mean_squared_error
+
 r2= r2_score(y_test, y_predict)
 print ("R2 스코어 :",r2)
 
@@ -84,8 +86,8 @@ print("===========hist===========")
 print(hist.history['val_loss'])
 print("===========hist===========")
 
-import matplotlib.pyplot as plt
-import matplotlib.pyplot as plt
+
+
 plt.rcParams['font.family'] = 'Malgun Gothic'
 plt.figure(figsize=(9,6))
 plt.plot(hist.history['loss'],c='red',label = 'loss',marker=".")

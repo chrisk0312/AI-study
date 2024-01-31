@@ -1,13 +1,8 @@
 #14.1 카피
 import warnings
 warnings.filterwarnings('ignore')
-import numpy as np
-from keras.models import Sequential
-from keras.layers import Dense
-from sklearn.model_selection import train_test_split
-from sklearn.datasets import load_boston 
-from sklearn.metrics import r2_score, mean_squared_error
 
+from sklearn.datasets import load_boston 
 #현재 사이킷 런 버전 1.3.0(pip uninstall scikit-learn, scikit-learn-intelex, scikit-image)
 #pip install scikit-learn==0.23.2
 #pip install scikit-learn==1.1.3
@@ -30,7 +25,10 @@ print(datasets.DESCR)
 # train_size 0.7이상, 0.9이하
 # R2 0.62 이상 
 
-
+import numpy as np
+from keras.models import Sequential
+from keras.layers import Dense
+from sklearn.model_selection import train_test_split
 
 #1 데이터
 x = np.array(datasets.data)
@@ -58,18 +56,6 @@ model.add(Dense(1))
 model.compile(loss='mse', optimizer='adam')
 
 from keras.callbacks import EarlyStopping
-
-# loss
-# The term loss typically refers to the training loss, 
-# which is the value of the objective function 
-# (e.g., mean squared error, cross-entropy) 
-
-# val_loss
-# val_loss represents the loss on a separate validation dataset.
-# During training, after each epoch, the model is evaluated on a dataset 
-# that it has not seen during training (validation set).
-# The validation set is used to monitor how well the model generalizes to unseen data. 
-
 es = EarlyStopping(monitor = 'val_loss',
                    mode= 'min', #min, max, auto
                    patience=10,
@@ -87,16 +73,9 @@ print("로스 :", loss)
 y_predict = model.predict(x_test)
 results = model.predict(x)
 
-
+from sklearn.metrics import r2_score, mean_squared_error
 r2= r2_score(y_test, y_predict)
 print ("R2 스코어 :",r2)
-#The R-squared (R2) score, 
-# also known as the coefficient of determination, 
-# is a statistical measure that 
-# represents the proportion of the variance in the 
-# dependent variable (target) that is predictable 
-# from the independent variables (features) in a regression model.
-
 
 def RMSE(aaa, bbb):
     return np.sqrt(mean_squared_error(aaa, bbb))
@@ -115,8 +94,9 @@ print(hist.history['val_loss'])
 print("===========hist===========")
 
 import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 plt.rcParams['font.family'] = 'Malgun Gothic'
-plt.figure(figsize=(10,10))
+plt.figure(figsize=(9,6))
 plt.plot(hist.history['loss'],c='red',label = 'loss',marker=".")
 plt.plot(hist.history['val_loss'], c='blue',label ='val_loss', marker='.')
 plt.legend (loc='upper right')
@@ -126,6 +106,16 @@ plt.ylabel('로스')
 plt.grid()
 plt.show()
 
+
+# 로스 : 33.07808303833008 (mse)
+# R2 스코어 : 0.6575566714761335
+
+# 로스 : 3.9236836433410645 (mae)
+# R2 스코어 : 0.6746762919060152
+
+# 로스 : 67.20851135253906
+# R2 스코어 : -0.10570586935927206
+# RMSE: 9.705179892057723
 
 # 로스 : 79.17364501953125
 # R2 스코어 : 0.07057771031286697
