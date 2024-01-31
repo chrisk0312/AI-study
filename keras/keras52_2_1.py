@@ -26,10 +26,11 @@ time_steps = 4
 y_column_index = data.columns.get_loc('T (degC)')  # Get the index of 'T (degC)' column
 x, y = split_xy(data_normalized, time_steps, y_column_index)
 
-
-x_train, y_train = x, y
-x_train, y_train = x[:720], y[:720]
-
+# Select training and testing data
+train_size = 720
+test_size = 144
+x_train, y_train = x[:train_size], y[:train_size]
+x_test, y_test = x[train_size:train_size + test_size], y[train_size:train_size + test_size]
 
 # Model
 model = Sequential()
@@ -45,12 +46,16 @@ es = EarlyStopping(monitor='loss', mode='min', patience=300, verbose=1, restore_
 model.fit(x_train, y_train, epochs=1000, batch_size=800, validation_split=0.1, verbose=2, callbacks=[es])
 
 # Predict on the next 144 rows
-x_predict, y_true = x[-144:], y[-144:]
+x_predict, y_true = x[train_size:], y[train_size:]
 y_predict = model.predict(x_predict)
 
 # Evaluate the model
-loss = model.evaluate(x_predict, y_true)
+loss = model.evaluate(x_test, y_test)
 r2 = r2_score(y_true, y_predict)
 
 print('Loss:', loss[0])
 print('R2:', r2)
+
+
+# Loss: 0.003337056376039982
+# R2: 0.9769659279759271
