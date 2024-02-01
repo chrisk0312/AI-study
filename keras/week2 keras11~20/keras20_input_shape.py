@@ -1,9 +1,4 @@
 from sklearn.datasets import load_boston
-from sklearn.model_selection import train_test_split
-from keras.models import Sequential
-from keras.layers import Dense
-import numpy as np
-
 datasets = load_boston()
 # x = datasets.data
 # print(datasets)
@@ -12,7 +7,10 @@ y = datasets.target
 # print(x.shape) #(506,13)
 # print(y.shape) #(506,)
 
-
+from sklearn.model_selection import train_test_split
+from keras.models import Sequential
+from keras.layers import Dense
+import numpy as np
 
 x_train, x_test, y_train, y_test = train_test_split(x,y, train_size=0.9,random_state=100)
 model=Sequential()
