@@ -40,9 +40,8 @@ output11 = Dense(5, activation='relu', name ='bit14')(dense13)
 
 # model2 = Model(inputs = input11, outputs = output11)
 # model2.summary()
-
 #2-3 concantenate
-merge1 = concatenate([output1, output11],name = 'mg1')
+merge1 = Concatenate(name = 'mg1')([output1, output11])
 merge2 = Dense(7, name='mg2')(merge1)
 merge3 = Dense(11, name ='mg3')(merge2)
 last_output = Dense(1, name ='last')(merge3)
@@ -50,6 +49,7 @@ last_output = Dense(1, name ='last')(merge3)
 model = Model(inputs =[input1, input11], outputs = last_output)
 model.summary()
 
+'''
 #compile and train 
 model.compile(loss= 'mse', optimizer='adam', metrics= ['mse'])
 model.fit([x1_train, x2_train], y_train, batch_size=1, verbose=3,
@@ -61,3 +61,4 @@ y_predict = model.predict([x1test, x2test])
 r2 = r2_score(y_test, y_predict)
 
 print("R-squared:", r2)
+'''
