@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, mean_squared_error
 import time 
 from keras.callbacks import EarlyStopping
-
+from sklearn.metrics import  accuracy_score
 #1. 데이터
 
 path = "c:\_data\dacon\ddarung\\"
@@ -90,7 +90,7 @@ print(y_submit)
 print(y_submit.shape) #(715, 1)
 
 r2= r2_score(y_test, y_predict)
-from sklearn.metrics import  accuracy_score
+
 
 def acc(y_test, y_predict):
     return(accuracy_score(y_test,y_predict))

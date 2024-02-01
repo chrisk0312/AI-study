@@ -70,16 +70,38 @@ from sklearn.metrics import r2_score, mean_squared_error, accuracy_score
 r2= r2_score(y_test, y_predict)
 print ("R2 스코어 :",r2)
 
+y_predict = model.predict(x_test)
+y_predict = (y_predict > 0.5).astype(int)  # Move this line up
+
+r2= r2_score(y_test, y_predict)
+print ("R2 스코어 :",r2)
+
 def acc(y_test, y_predict):
     return(accuracy_score(y_test,y_predict))
 rmse =acc(y_test, y_predict)
 print("ACC :",acc)
 
+results = model.predict(x)
+results = (results > 0.5).astype(int)  # Move this line up
+
+np.around(y_predict)
+from sklearn.metrics import r2_score, mean_squared_error, accuracy_score
+r2= r2_score(y_test, y_predict)
+print ("R2 스코어 :",r2)
+
+def acc(y_test, y_predict):
+    return(accuracy_score(y_test,y_predict))
+rmse =acc(y_test, y_predict)
+print("ACC :",acc)
 print("===================================")
 #########submission.csv 만들기(count 컬럼에 값만 제출)#############
-submission_csv['Outcome'] = np.around(y_submit)
+
+# Create a new DataFrame for submission
+submission_csv = pd.DataFrame()
+
+submission_csv['Outcome'] = np.around(results).flatten()  # Add '.flatten()'
 print(submission_csv)
-print(submission_csv.shape)
+submission_csv.to_csv('c:\_data/samplesubmission.csv', index=False)
 
 import matplotlib.pyplot as plt
 plt.rcParams['font.family'] = 'Malgun Gothic'
