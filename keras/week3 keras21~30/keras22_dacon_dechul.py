@@ -6,6 +6,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 from sklearn.metrics import accuracy_score, f1_score
 from keras.utils import to_categorical
+from sklearn.preprocessing import MaxAbsScaler
+
 
 #1.데이터
 path= "c:\_data\dacon\dechul\\"
@@ -58,7 +60,7 @@ test_csv['대출목적'] =lb.transform(test_csv['대출목적'])
 x_train,x_test,y_train,y_test=train_test_split(x,y_ohe,train_size=0.8,random_state=40,stratify=y_ohe)
 
 
-from sklearn.preprocessing import MaxAbsScaler
+
 
 scaler = MaxAbsScaler()
 

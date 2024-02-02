@@ -5,6 +5,9 @@ from keras.models import Sequential
 from keras.layers import Dense
 from sklearn.model_selection import train_test_split
 from sklearn.datasets import load_boston 
+from sklearn.preprocessing import MinMaxScaler, MaxAbsScaler
+from sklearn.preprocessing import StandardScaler, RobustScaler
+
 #현재 사이킷 런 버전 1.3.0(pip uninstall scikit-learn, scikit-learn-intelex, scikit-image)
 #pip install scikit-learn==0.23.2
 #pip install scikit-learn==1.1.3
@@ -35,11 +38,33 @@ y = np.array(datasets.target)
 
 x_train, x_test, y_train, y_test = train_test_split(x,y, test_size=0.2, random_state=100)
 
-from sklearn.preprocessing import MinMaxScaler, MaxAbsScaler
-from sklearn.preprocessing import StandardScaler, RobustScaler
-scaler = MinMaxScaler()
-scaler = RobustScaler()
+scaler = MaxAbsScaler()
 
+
+# scaler = MinMaxScaler()
+# scaler = RobustScaler()
+# scaler = StandardScaler()
+
+#We use scalers in machine learning to standardize or normalize 
+# the range of independent variables or features of data
+
+# MaxAbsScaler is used when you want to scale the features of your dataset
+# so that the maximum absolute value of each feature in the data is 1.0. 
+# It does not shift or center the data, and thus it does not destroy any sparsity.
+
+# MinMaxScaler is used when you want to scale the features of your dataset 
+# so that they lie in a given range, usually between 0 and 1, or 
+# so that the maximum absolute value of each feature is scaled to unit size. 
+# This can be useful in optimization algorithms that require features on a 
+# similar scale, like gradient descent, or algorithms that use distance measures, like K-nearest neighbors (KNN).
+
+# RobustScaler is used when you want to scale the features of your dataset to handle outliers.
+# Unlike other scalers like MinMaxScaler and StandardScaler, RobustScaler uses statistics based on percentiles 
+# (the interquartile range, to be specific) to scale the data, which makes it robust to outliers.
+
+# StandardScaler is used when you want to scale the features of your dataset 
+# so that they have a mean of 0 and a standard deviation of 1.
+# This is also known as standardization.
 
 scaler.fit(x_train)
 x_train = scaler.transform(x_train)
@@ -56,7 +81,7 @@ print(y_train)
 print(x_test)
 print(y_test)
 
-
+'''
 #2. 모델구성
 model = Sequential()
 model.add(Dense(10, input_dim=13)) #Number of Attributes: 13 numeric/categorical predictive. Median Value (attribute 14) is usually the target.
@@ -90,3 +115,5 @@ print ("R2 스코어 :",r2)
 
 # 로스 : 3.1488635540008545
 # R2 스코어 : 0.7225222369283609
+
+'''

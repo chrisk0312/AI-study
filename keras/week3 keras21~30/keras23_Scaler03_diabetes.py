@@ -4,6 +4,9 @@ from keras.models import Sequential
 from keras.layers import Dense
 from sklearn.model_selection import train_test_split
 import time
+from sklearn.preprocessing import MinMaxScaler, MaxAbsScaler
+from sklearn.preprocessing import StandardScaler, RobustScaler
+
 
 #1. 데이터
 datasets = load_diabetes()
@@ -26,8 +29,6 @@ y = np.array(datasets.target)
 
 x_train, x_test, y_train, y_test = train_test_split(x,y, test_size=0.25, random_state=100)
 
-from sklearn.preprocessing import MinMaxScaler, MaxAbsScaler
-from sklearn.preprocessing import StandardScaler, RobustScaler
 scaler = MinMaxScaler()
 scaler = RobustScaler()
 

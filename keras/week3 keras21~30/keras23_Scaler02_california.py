@@ -4,6 +4,9 @@ from keras.models import Sequential
 from keras.layers import Dense
 from sklearn.model_selection import train_test_split
 import time
+from sklearn.preprocessing import MinMaxScaler, MaxAbsScaler
+from sklearn.preprocessing import StandardScaler, RobustScaler
+
 
 #1.데이터
 datasets = fetch_california_housing()
@@ -27,10 +30,16 @@ y = np.array(datasets.target)
 
 x_train, x_test, y_train, y_test = train_test_split(x,y, test_size=0.1, random_state=100)
 
-from sklearn.preprocessing import MinMaxScaler, MaxAbsScaler
-from sklearn.preprocessing import StandardScaler, RobustScaler
-scaler = MinMaxScaler()
-scaler = RobustScaler()
+
+scaler = MaxAbsScaler()
+# scaler = MinMaxScaler()
+# scaler = RobustScaler()
+# scaler = StandardScaler()
+
+#We use scalers in machine learning to standardize or normalize 
+# the range of independent variables or features of data
+
+
 
 
 scaler.fit(x_train)
@@ -47,6 +56,8 @@ print(y_train)
 print(x_test)
 print(y_test)
 
+
+'''
 #2. 모델구성
 model = Sequential()
 model.add(Dense(8, input_dim=8))
@@ -86,3 +97,4 @@ print("걸린시간:", round (end_time - start_time,2), "초")
 # 로스 : 0.557756245136261 (mae) epochs=100
 # R2 스코어 : 0.44845464101008115
 # 걸린시간: 18.55 초
+'''

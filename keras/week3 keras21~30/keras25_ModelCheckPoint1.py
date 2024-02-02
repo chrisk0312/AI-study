@@ -100,6 +100,15 @@ mcp = ModelCheckpoint(monitor='val_loss', mode = 'auto', verbose= 1, save_best_o
 model.compile(loss= 'mse', optimizer= 'adam' ) #mae 2.64084 r2 0.8278   mse 12.8935 r2 0.82
 hist = model.fit(x_train, y_train, callbacks=[es,mcp], epochs= 200, batch_size = 20, validation_split= 0.27)
 
+# ModelCheckpoint is a callback in Keras that is used to save the model at certain intervals,
+# so you can load it later to continue training from where you left off, or use it for inference without having to retrain the model.
+# This is particularly useful when training deep learning models, which can take a long time to train.
+
+# filepath: the file path you want to save your model in.
+# monitor: the value being monitored, such as 'val_loss', 'val_accuracy', etc.
+# verbose: verbosity mode, 0 or 1.
+# save_best_only: if save_best_only=True, the latest best model according to the quantity monitored will not be overwritten.
+# mode: one of {auto, min, max}. If save_best_only=True, the decision to overwrite the current save file is made based on either the maximization or the minimization of the monitored quantity. For val_acc, this should be max, for val_loss this should be min, etc. In auto mode, the direction is automatically inferred from the name of the monitored quantity.
 
 
 #4. 평가, 예측

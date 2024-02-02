@@ -4,8 +4,8 @@
 #값 일부 자르기 (label encoder)
 #값 자른거 수치화까지!
 
-from keras.models import Sequential
-from keras.layers import Dense, Dropout
+from keras.models import Sequential, load_model
+from keras.layers import Dense
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -18,7 +18,7 @@ warnings.filterwarnings(action='ignore')
 
 
 #1. 데이터
-path = "C:\\_data\\dacon\\dechul\\"
+path = "C:\\_data\\daicon\\bank\\"
 
 train_csv = pd.read_csv(path + 'train.csv', index_col= 0)
 #print(train_csv)
@@ -144,7 +144,7 @@ print(np.unique(y, return_counts= True)) #Name: 근로기간, Length: 96294, dty
 #train_csv = train_csv.dropna(axis=0)
 #test_csv = train_csv.dropna(axis=0)
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, train_size= 0.9,  shuffle= True, random_state= 400, stratify= y) 
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size= 0.72,  shuffle= True, random_state= 301, stratify= y) 
 
      
      
@@ -177,34 +177,32 @@ x_test= mms.transform(x_test)
 #print(y_test)
 
 
-#2. 모델구성
+# #2. 모델구성
 
-model = Sequential()
-model.add(Dense(52, input_dim = 13,activation='sigmoid'))
-model.add(Dense(104, activation='relu'))
-model.add(Dropout(0.4))
-model.add(Dense(208, activation='relu'))
-model.add(Dropout(0.4))
-model.add(Dense(516, activation='relu'))
-model.add(Dense(77, activation='relu'))
-model.add(Dropout(0.6))
-model.add(Dense(7, activation = 'softmax'))
+# model = Sequential()
+# model.add(Dense(512, input_dim = 13,activation='sigmoid'))
+# model.add(Dense(256,)) # activation='relu' ))
+# model.add(Dense(128,))# activation='relu'))
+# model.add(Dense(64, ))
+# model.add(Dense(32, activation='relu'))
+# model.add(Dense(16,activation='relu'))
+# model.add(Dense(7, activation = 'softmax'))
 
 
 
-#3. 컴파일, 훈련
-
+# #3. 컴파일, 훈련
+model = load_model('../_data/_save/MCP/_k25/k26_110117-1428_0140-0.4413.hdf5')
 x_train = np.asarray(x_train).astype(np.float32)
 x_test = np.asarray(x_test).astype(np.float32)
 test_csv = np.asarray(test_csv).astype(np.float32)
 
 
-from keras.callbacks import EarlyStopping, ModelCheckpoint
-es = EarlyStopping(monitor = 'val_loss', mode = 'min', patience = 4000, verbose = 0, restore_best_weights= True)
-mcp = ModelCheckpoint(monitor='val_loss', mode = 'auto', verbose= 1, save_best_only=True, filepath='../_data/_save/MCP/keras26_11_MCP1.hdf5')
+# from keras.callbacks import EarlyStopping, ModelCheckpoint
+# es = EarlyStopping(monitor = 'val_loss', mode = 'min', patience = 1000, verbose = 0, restore_best_weights= True)
+# mcp = ModelCheckpoint(monitor='val_loss', mode = 'auto', verbose= 1, save_best_only=True, filepath='../_data/_save/MCP/keras26_11_MCP1.hdf5')
 
-model.compile(loss= 'mse', optimizer= 'adam', metrics= 'acc' ) #mae 2.64084 r2 0.8278   mse 12.8935 r2 0.82
-hist = model.fit(x_train, y_train, callbacks=[es,mcp], epochs= 100000, batch_size = 500, validation_split= 0.2)
+# model.compile(loss= 'mse', optimizer= 'adam', metrics= 'acc' ) #mae 2.64084 r2 0.8278   mse 12.8935 r2 0.82
+# hist = model.fit(x_train, y_train, callbacks=[es,mcp], epochs= 15000, batch_size = 2500, validation_split= 0.2)
 
 
 #4. 평가, 예측
