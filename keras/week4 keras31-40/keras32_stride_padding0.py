@@ -28,12 +28,6 @@ print(x_train.shape,x_test.shape) #(60000, 28, 28, 1) (10000, 28, 28, 1)
 model = Sequential()
 model.add(Conv2D(9,(3,3),strides=3,
                  padding='valid', 
-# The padding parameter is set to 'valid', which means no padding is applied. 
-# The output dimensions are smaller than the input dimensions due to the convolution operation.
-# 'valid': No padding is applied. The spatial dimensions (width, height) of the output feature maps will be smaller 
-# than the input feature maps. This is the default padding in Keras.
-# 'same': Padding is applied to the input feature maps so that the output feature maps have the same width and height as the input.
-# This is useful when you want the spatial dimensions of your feature maps to stay the same through the convolutional layers.
                  input_shape =(5, 5, 1)))
 #               shape =(batch_size, rows, columns, channels)
 #               shape =(batch_size, rows, columns, channels) 

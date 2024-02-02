@@ -38,17 +38,12 @@ model.add(Conv2D(filters=32,kernel_size=(2,2),activation='relu'))
 model.add(Conv2D(64,(2,2),activation='relu'))
 model.add(Conv2D(128,(2,2),activation='relu'))
 model.add(BatchNormalization())
-# BatchNormalization: This is a technique to provide any layer in a neural network with inputs that are zero mean/unit variance.
-# It's used to normalize the activations of the previous layer at each batch, i.e., applies a transformation 
-# that maintains the mean activation close to 0 and the activation standard deviation close to 1.
-# It has been shown to have several benefits: it can help your model train faster, provides a bit of regularisation,
-# and can reduce the sensitivity to the initial starting weights.
-
 model.add(MaxPooling2D(pool_size=(2,2)))
-# used to reduce the spatial dimensions (width, height) of your input volume.
-# This is done to reduce the amount of parameters and computation in the network, and hence to also control overfitting.
-# The pool_size=(2,2) parameter determines the spatial extent of the pooling, in this case defining a square 2x2 region.
-
+# model.add(Dropout(0.1))
+# model.add(Conv2D(filters=32,kernel_size=(2,2),activation='relu'))
+# model.add(Conv2D(128,(2,2),activation='relu'))
+# model.add(Conv2D(128,(2,2),activation='sigmoid'))
+# model.add(MaxPooling2D(pool_size=(2,2)))
 model.add(Dropout(0.1))
 model.add(Flatten())
 model.add(Dense(512,activation='relu'))

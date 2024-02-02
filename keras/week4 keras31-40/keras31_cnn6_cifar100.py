@@ -32,14 +32,6 @@ print(np.unique(y_train, return_counts=True))
 x_train = x_train.astype(np.float32) / 255
 x_test = x_test.astype(np.float32) / 255
 
-#astype(np.float32): This is used to change the data type of the numpy array to float32. 
-# This is often used when your data is originally in a format not suitable for mathematical operations,
-# like integers or objects, and you need to convert it to a floating point format.
-
-# / 255: This is a specific operation used for normalizing image data. 
-# Image data typically comes in the form of integer pixel values in the range [0, 255]. 
-# Dividing by 255 scales these values to the range [0, 1], which is a common range for neural network inputs.
-
 y_train = to_categorical(y_train)
 y_test = to_categorical(y_test)
 

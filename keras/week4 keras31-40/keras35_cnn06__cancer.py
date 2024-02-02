@@ -6,7 +6,6 @@ from keras.models import Sequential
 from keras.layers import Dense, Conv2D, Flatten, MaxPooling2D, Dropout
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
-from sklearn.preprocessing import StandardScaler, RobustScaler
 
 #1
 datasets= load_breast_cancer()
@@ -32,7 +31,7 @@ print(y_train)
 print(x_test)
 print(x_test)
 
-
+from sklearn.preprocessing import StandardScaler, RobustScaler
 mms = RobustScaler()
 mms.fit(x_train)
 x_train= mms.transform(x_train).reshape(x_train.shape[0],6,5,1)
