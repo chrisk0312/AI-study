@@ -4,8 +4,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 (x_train, y_train), (x_test, y_test) = fashion_mnist.load_data()
-x_train = x_train/255.
-x_test = x_test/255.
 
 
 train_datagen = ImageDataGenerator(
@@ -59,6 +57,22 @@ x_train = np.concatenate((x_train, x_augumented))
 y_train = np.concatenate((y_train, y_augumented)) #
 print(x_train.shape, y_train.shape) #(100000, 28, 28, 1) (100000,)
 
+# In the context of your code, "augument" seems to be a misspelling of "augment".
+# Data augmentation is a strategy used in machine learning to increase the diversity and 
+# amount of training data through random transformations and modifications.
+# In the context of image data, this can involve transformations like rotation, rescaling, horizontal 
+# or vertical flip, zooming, shearing, and shifting height or width.
+# In your code, augumet_size = 40000 is defining the number of augmented images to generate. 
+# The ImageDataGenerator is then used to generate these augmented images.
+# The x_augumented and y_augumented variables are copies of the images and 
+# labels in your training data that will be used for augmentation. 
+# The flow() method of ImageDataGenerator is then used to generate the augmented images.
+# The augmented images are then concatenated with the original training data.
+# The purpose of data augmentation is to increase the diversity of the training data and
+# improve the model's ability to generalize to new, unseen data.
+
+# So, in summary, "augument" in your code refers to data augmentation, 
+# a technique used to generate more training data and improve the model's ability to generalize.
 
 
 

@@ -56,6 +56,30 @@ for i in range(5):
 print(np.min(batch), np.max(batch))
 plt.show()    
 
-     
+# The flow() function is a method of the ImageDataGenerator class in Keras. 
+# It takes data & labels (numpy arrays) as input, and generates batches of augmented/normalized data.
+# When you call flow(), it returns an Iterator that yields tuples of (x, y)
+# where x is an array of image data and y is an array of corresponding labels.
 
+     
+# from keras.preprocessing.image import ImageDataGenerator
+
+# # create a data generator
+# datagen = ImageDataGenerator()
+
+# # load image data
+# x_train, y_train = load_data()
+
+# # fit parameters from data
+# datagen.fit(x_train)
+
+# # configure batch size and retrieve one batch of images
+# for X_batch, y_batch in datagen.flow(x_train, y_train, batch_size=9):
+#     # create a grid of 3x3 images
+#     for i in range(0, 9):
+#         pyplot.subplot(330 + 1 + i)
+#         pyplot.imshow(X_batch[i].reshape(28, 28), cmap=pyplot.get_cmap('gray'))
+#     # show the plot
+#     pyplot.show()
+#     break
 

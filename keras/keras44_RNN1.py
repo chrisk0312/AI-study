@@ -54,3 +54,18 @@ for i in range(1,6):
 
 print('Predicted values:', predicted_values)
 
+
+# RNN (Recurrent Neural Network) is a type of artificial neural network designed to recognize patterns 
+# in sequences of data, such as text, genomes, handwriting, or the spoken word. 
+# Unlike feedforward neural networks, RNNs can use their internal state (memory) to process sequences of inputs, 
+# which makes them ideal for such tasks.
+# RNNs are called "recurrent" because they perform the same task for every element of a sequence,
+# with the output being dependent on the previous computations.
+# This recurrence relation makes them suitable for tasks where the current output depends not just on the current input,
+# but also on a series of previous inputs.
+
+# On the other hand, CNN, or Convolutional Neural Network, is a class of deep learning neural networks, most commonly applied to analyzing visual imagery. They are designed to automatically and adaptively learn spatial hierarchies of features from tasks with grid-like topology, such as an image.
+
+# CNNs are composed of one or more convolutional layers, often with a subsampling layer, which are followed by one or more fully connected layers as in a standard multilayer neural network. The architecture of a CNN is designed to take advantage of the 2D structure of an input image (or other 2D input such as a speech signal).
+
+# In summary, the main difference between RNNs and CNNs is that RNNs are typically used for sequential data while CNNs are used for grid-like data (such as images). Both are categories of neural networks and are used in different types of tasks based on the nature of the data and the problem at hand.

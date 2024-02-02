@@ -39,11 +39,3 @@ print('loss', results)
 y_pred = np.array([8,9,10]).reshape(1,3,1)
 y_pred = model. predict(y_pred)
 print('[8,9,10]의 결과', y_pred)
-
-# LSTM(Long Short-Term Memory) is a type of Recurrent Neural Network (RNN) architecture. 
-# It was designed to overcome the problem of vanishing and exploding gradients in traditional RNNs, 
-# which makes it difficult for such networks to learn from long sequences of data.
-# LSTMs introduce the concept of a "cell state," or a horizontal line running through the top of the diagram of the network.
-# This allows information to be carried across many time steps, essentially providing the network with some form of memory. 
-# This makes LSTMs particularly effective for tasks involving sequences of data 
-# where context from earlier in the sequence may be informative for processing later parts of the sequence.
