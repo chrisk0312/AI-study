@@ -3,7 +3,7 @@ from keras.datasets import mnist
 import pandas as pd
 import matplotlib.pyplot as plt
 from keras.models import Sequential
-from keras.layers import Dense, Conv2D, Flatten, MaxPooling2D, LSTM, Conv1D
+from keras.layers import Dense, Conv2D, Flatten, MaxPooling2D, LSTM
 
 
 
@@ -41,8 +41,7 @@ y_test = pd.get_dummies(y_test)
 
 #2.모델
 model = Sequential()
-model.add(Conv1D(10, kernel_size=2, input_shape=(28,28), activation= 'relu'))
-model.add(Flatten())
+model.add(LSTM(10, input_shape=(28,28), activation= 'relu'))
 model.add(Dense(10,activation= 'relu'))
 model.add(Dense(10,activation= 'softmax'))
 

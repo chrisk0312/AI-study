@@ -1,6 +1,6 @@
 import numpy as np
 from keras.models import Sequential
-from keras.layers import Dense, LSTM, Conv1D, Flatten
+from keras.layers import Dense, LSTM, SimpleRNN, Bidirectional, GRU
 from keras.callbacks import EarlyStopping
 from sklearn.model_selection import train_test_split
 
@@ -19,12 +19,11 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, test_size= 0.3, shuffl
 
 #2. 모델구성
 model = Sequential()
-model.add(Conv1D(256, kernel_size=2, input_shape= (3,1), activation = 'relu'))
-model.add(Conv1D(1024, kernel_size=2,activation = 'relu'))
-model.add(Flatten())
+model.add(GRU(1024, input_shape= (3,1)))
 model.add(Dense(512, activation= 'relu'))
 model.add(Dense(256, activation= 'relu'))
-model.add(Dense(5, activation= 'relu'))
+model.add(Dense(128, activation= 'relu'))
+model.add(Dense(64, activation= 'relu'))
 model.add(Dense(1))
 
 
@@ -46,9 +45,14 @@ print('예측값 :', y_predict)
 # loss: [0.0038003113586455584, 0.0]
 # 예측값 : [[80.91556]]
 
+
 # loss: [0.002848625648766756, 0.0]
 # 예측값 : [[80.96809]]
 
-#Conv1D
-# loss: [0.001014080480672419, 0.0]
-# 예측값 : [[80.60575]]
+#Bidirection
+# loss: [0.0004319733416195959, 0.0]
+# 예측값 : [[71.145134]]
+
+#GRU
+# loss: [0.6388984322547913, 0.0]
+# 예측값 : [[73.337105]]
