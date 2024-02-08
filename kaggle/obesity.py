@@ -5,7 +5,6 @@ from keras.layers import Dense,Dropout,BatchNormalization, AveragePooling1D, Fla
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder, StandardScaler, MinMaxScaler, Normalizer, RobustScaler
 from sklearn.metrics import accuracy_score, f1_score
-import lightgbm as lgb
 from lightgbm import LGBMClassifier
 
 path= "c:/_data/kaggle/obesity/"
@@ -14,8 +13,6 @@ test=pd.read_csv(path+"test.csv",index_col=0)
 sample=pd.read_csv(path+"sample_submission.csv")
 x= train.drop(['NObeyesdad'],axis=1)
 y= train['NObeyesdad']
-# print(train.shape,test.shape)   #(20758, 17) (13840, 16)    NObeyesdad
-# print(x.shape,y.shape)  #(20758, 16) (20758,)
 
 lb = LabelEncoder()
 
@@ -34,12 +31,12 @@ for column in columns_to_encode:
     
 # print(x['Gender'])
 # print(test['CALC'])
-x_train,x_test,y_train,y_test=train_test_split(x,y,train_size=0.90,random_state=3,stratify=y)
+x_train,x_test,y_train,y_test=train_test_split(x,y,train_size=0.90,random_state=777777,stratify=y)
 
 # print(x_train.shape,y_train.shape)  #(18682, 16) (18682,)
 # print(x_test.shape,y_test.shape)    #(2076, 16) (2076,)
 
-random_state = 333
+random_state = 277
 lgbm_params = {"objective": "multiclass",
                "metric": "multi_logloss",
                "verbosity": -1,
@@ -67,10 +64,46 @@ y_pred = model.predict(x_test)
 y_submit = model.predict(test)
 sample['NObeyesdad']=y_submit
 
-sample.to_csv(path + "비만1.csv", index=False)
+sample.to_csv(path + "obesity25.csv", index=False)
 # 정확도 평가
 accuracy = accuracy_score(y_test, y_pred)
 print("Accuracy:", accuracy)
 '''
-Accuracy: 0.9142581888246628        903등
+
+
+from sklearn.model_selection import GridSearchCV
+
+# Define the parameter grid
+param_grid = {
+    'n_estimators': [100, 200, 300, 400, 500],
+    'learning_rate': [0.01, 0.05, 0.1],
+    'num_leaves': [20, 30, 40],
+    # Add more parameters here
+}
+
+# Create a GridSearchCV object
+grid = GridSearchCV(LGBMClassifier(objective='multiclass', metric='multi_logloss', verbosity=-1, boosting_type='gbdt', random_state=277, num_class=7), param_grid, cv=5)
+
+# Fit the GridSearchCV object to the data
+grid.fit(x_train, y_train)
+
+# Print the best parameters
+print(grid.best_params_)
+
+# Use the best model
+model = grid.best_estimator_
+
+# Make predictions on the test data
+y_pred = model.predict(x_test)
+
+# Evaluate the model
+accuracy = accuracy_score(y_test, y_pred)
+print("Accuracy:", accuracy)
+
+# Make predictions on the test data
+y_submit = model.predict(test)
+
+# Create a submission DataFrame and save it to a CSV file
+sample['NObeyesdad'] = y_submit
+sample.to_csv(path + "obesity22.csv", index=False)
 '''
