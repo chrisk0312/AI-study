@@ -24,17 +24,25 @@ print(np.min(x_test), np.max(x_test))
 # x_train = scaler.fit_transform(x_train)
 # x_test = scaler.transform(x_test)
 parameters = [
-    {"RF__n_estimators":[100,200], "RF__max_depth":[6,10,12],
-     "RF__min_samples_leaf":[3,10]},#12
-    {"RF__max_depth":[6,8,10,12], "RF__min_samples_leaf":[3,5,7,10]},#16
-    {"RF__min_samples_leaf":[3,5,7,10], "RF__min_samples_split":[2,3,5,10]},#16
-    {"RF__min_samples_split":[2,3,5,10]},#4
+    {"randomforestclassifier__n_estimators":[100,200], "randomforestclassifier__max_depth":[6,10,12],
+     "randomforestclassifier__min_samples_leaf":[3,10]},#12
+    {"randomforestclassifier__max_depth":[6,8,10,12], "randomforestclassifier__min_samples_leaf":[3,5,7,10]},#16
+    {"randomforestclassifier__min_samples_leaf":[3,5,7,10], "randomforestclassifier__min_samples_split":[2,3,5,10]},#16
+    {"randomforestclassifier__min_samples_split":[2,3,5,10]},#4
 ]
 
 # Define a list of models
 # model = RandomForestClassifier()
 
-pipe = Pipeline([('Minmax', MinMaxScaler()), ('RF', RandomForestClassifier())]) #2개의 모델을 연결해주는 파이프라인
+pipe = make_pipeline(MinMaxScaler(), RandomForestClassifier()) #2개의 모델을 연결해주는 파이프라인
+#Pipeline is a class that takes a list of tuples. 
+#The first element of each tuple is a string that provides the name of the step, 
+# and the second element is an instance of the transformer or estimator
+
+#make_pipeline is a function that takes a sequence of transformers and estimators.
+#It automatically gives each step a name based on its class.
+#The name is just the lowercased class name.
+
 # model = GridSearchCV(pipe, parameters, cv=5, verbose=1)
 model = RandomizedSearchCV(pipe, parameters, cv=5, verbose=1)
 # model = HalvingGridSearchCV(pipe, parameters, cv=5, verbose=1)
