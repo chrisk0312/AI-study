@@ -9,6 +9,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 #data
 datasets = load_iris()
@@ -23,8 +24,10 @@ print(df)
 print('============================================')
 print(df.corr())
 
-import matplotlib.pyplot as plt
+
 import seaborn as sns
+print(sns.__version__) # 0.11.2
+
 sns.set(font_scale=1.2)
 sns.heatmap(data=df.corr(), 
             square=True, 
