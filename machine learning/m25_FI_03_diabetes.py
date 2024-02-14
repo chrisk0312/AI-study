@@ -1,21 +1,42 @@
-from sklearn.datasets import load_breast_cancer
-from sklearn.svm import LinearSVC
-from sklearn.metrics import r2_score, accuracy_score
 from sklearn.model_selection import train_test_split
-import numpy as np
+from sklearn.metrics import accuracy_score
+from sklearn.svm import LinearSVC
 import pandas as pd
-from xgboost import XGBClassifier
-#1.데이터
-datasets = load_breast_cancer()
-x = datasets.data
-y= datasets.target
+import numpy as np
+from sklearn.linear_model import Perceptron, LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+
+#1 데이터
+path = "c:\\_data\\dacon\\diabetes\\"
+train_csv = pd.read_csv(path + "train.csv",index_col=0)
+print(train_csv)
+test_csv = pd.read_csv(path + "test.csv", index_col=0)
+print(test_csv)
+submission_csv = pd.read_csv(path +"sample_submission.csv",)
+print(submission_csv)
+print(train_csv.shape) 
+print(test_csv.shape) 
+print(submission_csv.shape) 
+print(train_csv.columns)
+print(train_csv.info())
+print(test_csv.info())
+print(train_csv.describe())
+
+###########x와 y의 값을 분리
+x= train_csv.drop(['Outcome'], axis=1) 
+print(x)
+y = train_csv['Outcome']
+print(y)
+
 
 
 # Convert to DataFrame
 df = pd.DataFrame(x, columns=datasets.feature_names)
 
 # Split the data
-x_train, x_test, y_train, y_test = train_test_split(df, y, test_size=0.2, random_state=42)
+x_train, x_test, y_train, y_test = train_test_split(df, y, test_size=0.3, random_state=42)
 
 # Train a model on the original data
 model = XGBClassifier()
