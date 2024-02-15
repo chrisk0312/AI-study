@@ -13,7 +13,9 @@ from sklearn.svm import SVR
 from sklearn.linear_model import LogisticRegression, Perceptron
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.tree import DecisionTreeRegressor
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import RandomForestRegressor, ExtraTreesClassifier
+from sklearn.model_selection import train_test_split,KFold,cross_val_score, StratifiedKFold, cross_val_predict
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 
 #1. 데이터
@@ -53,31 +55,22 @@ test_csv.loc[test_csv['type'] == 'white', 'type'] = 0
 
 print(test_csv)
 
+x_train, x_test, y_train, y_test = train_test_split(x, y, shuffle= True, random_state= 123, train_size=0.8, stratify=y)
+scaler = MinMaxScaler()
+
+x_train = scaler.fit_transform(x_train)
+x_test = scaler.fit_transform(x_test)
 
 
-#print(x.shape,y.shape) #(5497, 12) (5497, 7)
-
-
-
-
-x_train, x_test, y_train, y_test = train_test_split(x, y, train_size= 0.8, shuffle= True, random_state=364, stratify= y)
-
-from sklearn.preprocessing import MinMaxScaler, MaxAbsScaler
-from sklearn.preprocessing import StandardScaler, RobustScaler
-
-#mms = MinMaxScaler()
-#mms = StandardScaler()
-#mms = MaxAbsScaler()
-mms = RobustScaler()
-
-mms.fit(x_train)
-x_train= mms.transform(x_train)
-x_test= mms.transform(x_test)
-
+n_splits=5
+#kfold = KFold(n_splits=n_splits, shuffle=True, random_state=123)
+#n_split = 섞어서 분할하는 갯수
+kfold = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=123)
 
 #2. 모델구성
-
 from sklearn.utils import all_estimators
+import warnings
+warnings.filterwarnings('ignore')
 
 allAlgorithms = all_estimators(type_filter='classifier')
 #allAlgorithms = all_estimators(type_filter='regressor')
@@ -91,53 +84,40 @@ for name, algorithm in allAlgorithms:
        #2. 모델
         model = algorithm()
         
-        #3. 훈련
         
-        model.fit(x_train, y_train)#, callbacks= [mcp])
+       #3. 훈련
+        scores = cross_val_score(model, x_train, y_train, cv=kfold)
         
-        acc = model.score(x_test, y_test)
-        print(name, '의 정답률은 : ', acc)
+        print("=================================================================")
+        print("================", name, "==============================")
+        print("acc :", scores, "\n 평균 acc :", round(np.mean(scores),4))
+        #4. 예측
+        y_predict = cross_val_predict(model, x_test, y_test, cv= kfold)
+        acc= accuracy_score(y_test, y_predict)
+        print('cross_val_predict ACC :', acc)
+ 
+   
     except:
         print(name,  '은 에러!')
         #continue
+# #3. 훈련
+# scores = cross_val_score(model, x_train, y_train, cv=kfold)
+# print("acc :", scores, "\n 평균 acc :", round(np.mean(scores),4))
+
+# #4. 예측
+# y_predict = cross_val_predict(model, x_test, y_test, cv= kfold)
+# print(y_predict)
+# print(y_test)
+
+# acc= accuracy_score(y_test, y_predict)
+# print('cross_val_predict ACC :', acc)
 
 
-x_train = np.asarray(x_train).astype(np.float32)
-x_test = np.asarray(x_test).astype(np.float32)
-test_csv = np.asarray(test_csv).astype(np.float32)
-
-
-#3. 컴파일, 훈련
-
-start_time = time.time()
-model.fit(x_train, y_train)
-end_time = time.time()
-
-#4. 평가, 예측
-
-results = model.score(x_test, y_test)
-print("model.score:", results)
-y_predict = model.predict(x_test)
-
-
-y_submit = model.predict(test_csv)
-
-
-y_submit = (y_submit)+3
-submission_csv['quality'] = y_submit
-#acc = accuracy_score(y_predict, y_test)
-ltm = time.localtime(time.time())
-#print("acc :", acc)
-print("로스 :", results)
-save_time = f"{ltm.tm_year}{ltm.tm_mon}{ltm.tm_mday}{ltm.tm_hour}{ltm.tm_min}{ltm.tm_sec}" 
-submission_csv.to_csv(path+f"submission_{save_time}e.csv", index=False)
-
-
-
-
-print("걸린 시간 :", round(end_time - start_time, 2), "초" )
 
 
 #LinearSVR()
 # model.score: 0.2888460317435524
 # 로스 : 0.2888460317435524
+
+# acc : [0.65454545 0.68181818 0.66424022 0.67788899 0.67424932] 
+#  평균 acc : 0.6705

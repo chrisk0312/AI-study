@@ -43,10 +43,3 @@ print("acc:", accuracy_score(y_predict_best,y_test))#acc: 0.9666666666666667
 print("걸린시간:", round(end_time- start_time,2)) #걸린시간: 1.5781776905059814
 print(pd.DataFrame(model.cv_results_).T)
 
-# Grid Search is a tuning technique in machine learning that allows you to systematically work through multiple combinations of parameter tunes,
-# cross-validating as it goes to determine which tune gives the best performance.
-# The performance is typically measured using K-fold Cross Validation.
-# The traditional way of performing hyperparameter optimization has been grid search, or a parameter sweep, 
-# which is simply an exhaustive searching through a manually specified subset of the hyperparameter space of a learning algorithm.
-# A grid search algorithm must be guided by some performance metric, typically measured by cross-validation on the training set 
-# or evaluation on a held-out validation set.

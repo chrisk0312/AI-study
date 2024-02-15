@@ -15,13 +15,25 @@ print(df)
 n_splits = 3
 kfold = KFold(n_splits=n_splits, shuffle=True, random_state=123)
 
-# KFold object is created to split a dataset into 3 folds. 
-# The split method is then used to generate the indices for the training and validation sets for each fold.
-# The difference between KFold and KFold.split is that KFold is a class that provides the functionality to perform K-Fold Cross Validation,
-# while KFold.split is a specific method of the KFold class that generates the train/test indices.
-
-
 for train_index, val_index in kfold.split(df):
     print("================================")
     print(train_index, "\n", val_index)
     print(len(train_index), len(val_index))
+
+'''
+x_train , x_test, y_train, y_test = train_test_split(x,y,train_size=0.8,random_state=77,stratify=y)
+
+
+model=LinearSVC(C=100)
+#C가 크면 training point들을 더 잘 분류하려고 노력함.(과적합), C가 작으면 training point들을 덜 잘 분류하려고 노력함.(과소적합 )
+
+model.fit(x_train,y_train)
+
+
+results = model.score(x_test,y_test)
+print("model.score:", results)
+y_predict = model.predict(x_test)  
+print(y_predict) 
+acc = accuracy_score(y_predict,y_test)
+print("acc:", acc)
+'''

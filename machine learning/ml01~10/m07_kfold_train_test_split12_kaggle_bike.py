@@ -13,6 +13,10 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.dummy import DummyClassifier
+from sklearn.model_selection import train_test_split,KFold,cross_val_score, StratifiedKFold, cross_val_predict
+from sklearn.metrics import accuracy_score
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+
 #1. 데이터
 path = "C:\\_data\\kaggle\\bike\\"
 
@@ -39,6 +43,13 @@ print(y)
 
 print(train_csv.index)
 from sklearn.model_selection import train_test_split,KFold,cross_val_score
+x_train, x_test, y_train, y_test = train_test_split(x, y, shuffle= True, random_state= 123, train_size=0.8)
+scaler = MinMaxScaler()
+
+x_train = scaler.fit_transform(x_train)
+x_test = scaler.fit_transform(x_test)
+
+
 
 n_splits=5
 kfold = KFold(n_splits=n_splits, shuffle=True, random_state=123)
@@ -51,7 +62,12 @@ model = DummyClassifier()
 scores = cross_val_score(model, x, y, cv=kfold)
 print("acc :", scores, "\n 평균 acc :", round(np.mean(scores),4))
 
-#2. 모델구성
+#4. 예측
+y_predict = cross_val_predict(model, x_test, y_test, cv= kfold)
+print(y_predict)
+print(y_test)
+
+
 
 
 

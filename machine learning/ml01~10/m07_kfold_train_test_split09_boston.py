@@ -37,15 +37,21 @@ from sklearn.linear_model import LinearRegression, Perceptron
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import train_test_split,KFold,cross_val_score, StratifiedKFold
+from sklearn.model_selection import train_test_split,KFold,cross_val_score, StratifiedKFold, cross_val_predict
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.metrics import accuracy_score
 
 #1. 데이터
 
 x = np.array(datasets.data)
 y = np.array(datasets.target)
 
-RandomForestRegressor
+x_train, x_test, y_train, y_test = train_test_split(x, y, shuffle= True, random_state= 123, train_size=0.8)
 
+scaler = MinMaxScaler()
+
+x_train = scaler.fit_transform(x_train)
+x_test = scaler.fit_transform(x_test)
 n_splits=5
 #kfold = KFold(n_splits=n_splits, shuffle=True, random_state=123)
 #n_split = 섞어서 분할하는 갯수
@@ -56,8 +62,16 @@ kfold = KFold(n_splits=n_splits, shuffle=True, random_state=123)
 model = RandomForestRegressor()
 
 #3. 훈련
-scores = cross_val_score(model, x, y, cv=kfold)
+scores = cross_val_score(model, x_train, y_train, cv=kfold)
 print("acc :", scores, "\n 평균 acc :", round(np.mean(scores),4))
+
+#4. 예측
+y_predict = cross_val_predict(model, x_test, y_test, cv= kfold)
+
+
+
+
+
 #로스 : 11.972917556762695
 #R2 스코어 : 0.8349828030281251
 #test_size= 0.20, random_state= 4041

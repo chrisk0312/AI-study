@@ -14,7 +14,8 @@ from sklearn.linear_model import LogisticRegression, Perceptron
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor, ExtraTreesClassifier
-from sklearn.model_selection import train_test_split,KFold,cross_val_score
+from sklearn.model_selection import train_test_split,KFold,cross_val_score, StratifiedKFold, cross_val_predict
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 
 #1. 데이터
@@ -54,16 +55,33 @@ test_csv.loc[test_csv['type'] == 'white', 'type'] = 0
 
 print(test_csv)
 
+x_train, x_test, y_train, y_test = train_test_split(x, y, shuffle= True, random_state= 123, train_size=0.8, stratify=y)
+scaler = MinMaxScaler()
+
+x_train = scaler.fit_transform(x_train)
+x_test = scaler.fit_transform(x_test)
+
+
 n_splits=5
-kfold = KFold(n_splits=n_splits, shuffle=True, random_state=123)
+#kfold = KFold(n_splits=n_splits, shuffle=True, random_state=123)
 #n_split = 섞어서 분할하는 갯수
+kfold = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=123)
 
 #2. 모델구성
 model = ExtraTreesClassifier()
 
 #3. 훈련
-scores = cross_val_score(model, x, y, cv=kfold)
+scores = cross_val_score(model, x_train, y_train, cv=kfold)
 print("acc :", scores, "\n 평균 acc :", round(np.mean(scores),4))
+
+#4. 예측
+y_predict = cross_val_predict(model, x_test, y_test, cv= kfold)
+print(y_predict)
+print(y_test)
+
+acc= accuracy_score(y_test, y_predict)
+print('cross_val_predict ACC :', acc)
+
 
 
 
@@ -73,3 +91,5 @@ print("acc :", scores, "\n 평균 acc :", round(np.mean(scores),4))
 
 # acc : [0.65454545 0.68181818 0.66424022 0.67788899 0.67424932] 
 #  평균 acc : 0.6705
+
+# cross_val_predict ACC : 0.5554545454545454

@@ -202,8 +202,15 @@ y = le.fit_transform(y)
 
      
 
-from sklearn.model_selection import train_test_split,StratifiedKFold,cross_val_score
+from sklearn.model_selection import train_test_split,KFold,cross_val_score, StratifiedKFold, cross_val_predict
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
+
+x_train, x_test, y_train, y_test = train_test_split(x, y, shuffle= True, random_state= 123, train_size=0.8, stratify=y)
+scaler = MinMaxScaler()
+
+x_train = scaler.fit_transform(x_train)
+x_test = scaler.fit_transform(x_test)
 
 n_splits=5
 kfold = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=123)
@@ -213,8 +220,17 @@ kfold = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=123)
 model = RandomForestRegressor()
 
 #3. 훈련
-scores = cross_val_score(model, x, y, cv=kfold)
+scores = cross_val_score(model, x_train, y_train, cv=kfold)
 print("acc :", scores, "\n 평균 acc :", round(np.mean(scores),4))
+
+#4. 예측
+y_predict = cross_val_predict(model, x_test, y_test, cv= kfold)
+print(y_predict)
+print(y_test)
+
+acc= accuracy_score(y_test, y_predict)
+print('cross_val_predict ACC :', acc)
+
 
 
 
