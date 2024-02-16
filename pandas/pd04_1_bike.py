@@ -100,6 +100,51 @@ print(outliers)
 # 2161   NaN                   NaN                     1.0  ...             NaN            NaN             NaN
 # 2171   NaN                   NaN                     NaN  ...             NaN            NaN            69.0
 
-import matplotlib.pyplot as plt
-plt.boxplot(train_csv)
+# import matplotlib.pyplot as plt
+# plt.boxplot(train_csv)
+# plt.show()
+
+
+x_train, x_test, y_train, y_test = train_test_split(x,y,train_size=0.9,shuffle=False,random_state=333)
+
+#model
+model = Sequential()
+model.add(Dense(512,input_dim=9,activation='sigmoid'))
+model.add(Dense(512,activation='relu'))
+model.add(Dense(512,activation='relu'))
+model.add(Dense(256,activation='relu'))
+model.add(Dense(256,activation='relu'))
+model.add(Dense(256,activation='relu'))
+model.add(Dense(256,activation='relu'))
+model.add(Dense(128,activation='relu'))
+model.add(Dense(64,activation='relu'))
+model.add(Dense(1))
+
+
+#compile & fit
+model.compile(loss='mse',optimizer='adam',metrics=['mse'])
+es = EarlyStopping(monitor='val_loss',mode='min',verbose=1,patience=1024,restore_best_weights=True)
+hist = model.fit(x_train,y_train,epochs=102,batch_size=16,validation_split=0.35,verbose=2,callbacks=[es])
+
+#evaluate & predeict
+loss = model.evaluate(x_test,y_test,verbose=0)
+y_predict = model.predict(x_test,verbose=0)
+y_submit = model.predict(test_csv,verbose=0)
+
+import datetime
+dt = datetime.datetime.now()
+submission_csv['count'] = y_submit
+submission_csv.to_csv(path+f"submission_{dt.day}day{dt.hour}-{dt.minute}.csv",index=False)
+
+r2 = r2_score(y_test,y_predict)
+print(f"{loss=}\n{r2=}")
+
+plt.rcParams['font.family'] = 'Malgun Gothic'
+plt.rcParams['axes.unicode_minus']=False
+plt.title('따릉이')
+plt.xlabel('epochs')
+plt.ylabel('loss')
+plt.plot(hist.history['loss'],label='loss',color='red',marker='.')
+plt.plot(hist.history['val_loss'],label='val_loss',color='blue',marker='.')
+plt.legend()
 plt.show()
