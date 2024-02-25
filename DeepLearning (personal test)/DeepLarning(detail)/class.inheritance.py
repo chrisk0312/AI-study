@@ -36,6 +36,6 @@ print(A.speak()) # 강아지1호 says Woof!
 
 B = Cat("고양이1호", "고양이2호") # Cat 클래스의 인스턴스 생성
 print(B.speak())  #고양이1호 says Meow!
-
+print(B.speak())  #고양이1호 says Meow!
 
 
