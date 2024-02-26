@@ -39,3 +39,4 @@ results = model.predict([1])
 print("로스 :", loss)
 print("[1]의 예측값 :", results)
 '''
+#tset0226
