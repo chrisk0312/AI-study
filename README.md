@@ -7,9 +7,7 @@
 ## Apple Certified Support Professional_(https://www.credly.com/badges/84bf1596-e77c-461d-a4a8-d022b1000d6a/public_url)
 ## Apple Certified IT Professional_(https://www.credly.com/badges/2f1ef160-92f7-48f9-8c82-e970883b5200/public_url)
 
-<video controls="" width="800" height="500" muted="" loop="" autoplay="">
-<source src="https://github.com/YogangSingh/YogangSingh.github.io/raw/main/MultiUSV_Trim_MP4.mp4" type="video/mp4">
-</video>
+
 
 
 
