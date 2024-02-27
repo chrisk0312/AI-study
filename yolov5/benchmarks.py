@@ -24,14 +24,14 @@ Requirements:
 Usage:
     $ python benchmarks.py --weights yolov5s.pt --img 640
 """
+# benchmark (measure the performance of) certain pieces of code, functions, or entire systems. 
+import argparse #  command-line interfaces 쉽게 만들어주는 라이브러리
+import platform # 파이썬에서 사용하는 운영체제의 정보를 얻을 수 있는 라이브러리
+import sys # 파이썬 인터프리터가 제공하는 변수와 함수를 직접 제어할 수 있게 해주는 라이브러리
+import time # 시간과 관련된 함수를 제공하는 라이브러리
+from pathlib import Path # 파일 시스템 경로를 다루는 라이브러리
 
-import argparse
-import platform
-import sys
-import time
-from pathlib import Path
-
-import pandas as pd
+import pandas as pd # 데이터 분석을 위한 라이브러리
 
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[0]  # YOLOv5 root directory
