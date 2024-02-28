@@ -10,78 +10,78 @@ Export:
     $ python export.py --weights yolov5s.pt --include saved_model pb tflite tfjs
 """
 
-import argparse
-import sys
-from copy import deepcopy
-from pathlib import Path
+import argparse #argparse 사용
+import sys #sys 사용
+from copy import deepcopy #copy 모듈 사용
+from pathlib import Path #pathlib 모듈 사용
 
-FILE = Path(__file__).resolve()
+FILE = Path(__file__).resolve() #파일 경로
 ROOT = FILE.parents[1]  # YOLOv5 root directory
-if str(ROOT) not in sys.path:
+if str(ROOT) not in sys.path: #ROOT가 sys.path에 없으면
     sys.path.append(str(ROOT))  # add ROOT to PATH
 # ROOT = ROOT.relative_to(Path.cwd())  # relative
 
-import numpy as np
-import tensorflow as tf
-import torch
-import torch.nn as nn
-from tensorflow import keras
+import numpy as np #numpy 사용
+import tensorflow as tf #tensorflow 사용
+import torch #torch 사용
+import torch.nn as nn #torch.nn 사용
+from tensorflow import keras #keras 사용
 
-from models.common import (
-    C3,
-    SPP,
-    SPPF,
-    Bottleneck,
-    BottleneckCSP,
-    C3x,
-    Concat,
-    Conv,
-    CrossConv,
-    DWConv,
-    DWConvTranspose2d,
-    Focus,
-    autopad,
+from models.common import ( #models.common 모듈 사용
+    C3, #  convolutional layer 타입 or a model architecture.
+    SPP, # Spatial Pyramid Pooling, a technique used in convolutional neural networks에서 사용되는 scale levels 나타내는 pool features.
+    SPPF, # Spatial Pyramid Pooling에 연관된 함수
+    Bottleneck, #차원을 줄이고, 특징을 추출하는 레이어
+    BottleneckCSP, # Cross Stage Partial connections에서 사용, 모델 향상을 위해 사용
+    C3x, #cross convolutions 사용하는 C3 layer
+    Concat, #axis와 tensor list를 합침
+    Conv, # Convolutional neural network에서 사용되는 레이어
+    CrossConv, # a cross or criss-cross pattern 연결을 사용하는 convolutional layer
+    DWConv, # Depthwise Convolutional layer, 분리된 커널을 사용하여 입력 채널마다 따로따로 컨볼루션 연산을 수행
+    DWConvTranspose2d, # Depthwise Convolutional Transpose layer, 입력 채널마다 따로따로 컨볼루션 연산을 수행
+    Focus, # 집중화된 wh 정보를 c-space로
+    autopad, #padding을 자동으로 설정
 )
-from models.experimental import MixConv2d, attempt_load
-from models.yolo import Detect, Segment
-from utils.activations import SiLU
-from utils.general import LOGGER, make_divisible, print_args
+from models.experimental import MixConv2d, attempt_load #실험적 모델
+from models.yolo import Detect, Segment #yolo 모델
+from utils.activations import SiLU #활성화 함수
+from utils.general import LOGGER, make_divisible, print_args #일반적인 유틸리티
 
 
-class TFBN(keras.layers.Layer):
+class TFBN(keras.layers.Layer): #keras.layers.Layer 상속
     # TensorFlow BatchNormalization wrapper
-    def __init__(self, w=None):
-        super().__init__()
-        self.bn = keras.layers.BatchNormalization(
-            beta_initializer=keras.initializers.Constant(w.bias.numpy()),
-            gamma_initializer=keras.initializers.Constant(w.weight.numpy()),
-            moving_mean_initializer=keras.initializers.Constant(w.running_mean.numpy()),
-            moving_variance_initializer=keras.initializers.Constant(w.running_var.numpy()),
-            epsilon=w.eps,
+    def __init__(self, w=None): #초기화
+        super().__init__() #상속받은 클래스의 __init__ 메소드 호출
+        self.bn = keras.layers.BatchNormalization( #BatchNormalization 레이어
+            beta_initializer=keras.initializers.Constant(w.bias.numpy()), #beta 초기화
+            gamma_initializer=keras.initializers.Constant(w.weight.numpy()), #gamma 초기화
+            moving_mean_initializer=keras.initializers.Constant(w.running_mean.numpy()), #moving_mean 초기화
+            moving_variance_initializer=keras.initializers.Constant(w.running_var.numpy()), #moving_variance 초기화
+            epsilon=w.eps, #epsilon
         )
 
-    def call(self, inputs):
-        return self.bn(inputs)
+    def call(self, inputs):#호출
+        return self.bn(inputs) #bn 레이어에 inputs 전달
 
 
-class TFPad(keras.layers.Layer):
+class TFPad(keras.layers.Layer): #keras.layers.Layer 상속
     # Pad inputs in spatial dimensions 1 and 2
-    def __init__(self, pad):
-        super().__init__()
-        if isinstance(pad, int):
-            self.pad = tf.constant([[0, 0], [pad, pad], [pad, pad], [0, 0]])
-        else:  # tuple/list
-            self.pad = tf.constant([[0, 0], [pad[0], pad[0]], [pad[1], pad[1]], [0, 0]])
+    def __init__(self, pad): #초기화
+        super().__init__() #상속받은 클래스의 __init__ 메소드 호출
+        if isinstance(pad, int): #pad가 int형이면
+            self.pad = tf.constant([[0, 0], [pad, pad], [pad, pad], [0, 0]]) #pad 설정
+        else:  # tuple/list #그렇지 않으면
+            self.pad = tf.constant([[0, 0], [pad[0], pad[0]], [pad[1], pad[1]], [0, 0]]) #pad 설정
 
-    def call(self, inputs):
-        return tf.pad(inputs, self.pad, mode="constant", constant_values=0)
+    def call(self, inputs): #호출
+        return tf.pad(inputs, self.pad, mode="constant", constant_values=0) #inputs에 pad 적용
 
 
-class TFConv(keras.layers.Layer):
+class TFConv(keras.layers.Layer): #keras.layers.Layer 상속
     # Standard convolution
-    def __init__(self, c1, c2, k=1, s=1, p=None, g=1, act=True, w=None):
+    def __init__(self, c1, c2, k=1, s=1, p=None, g=1, act=True, w=None): #초기화
         # ch_in, ch_out, weights, kernel, stride, padding, groups
-        super().__init__()
+        super().__init__()#상속받은 클래스의 __init__ 메소드 호출
         assert g == 1, "TF v2.2 Conv2D does not support 'groups' argument"
         # TensorFlow convolution padding is inconsistent with PyTorch (e.g. k=3 s=2 'SAME' padding)
         # see https://stackoverflow.com/questions/52975843/comparing-conv2d-with-padding-between-tensorflow-and-pytorch
