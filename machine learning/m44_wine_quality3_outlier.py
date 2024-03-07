@@ -14,7 +14,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
-path = "C:\\_data\\DACON\\와인품질분류\\"
+path = "C:\\_data\\dacon\\wine\\"
 train_csv = pd.read_csv(path+"train.csv",index_col=0)
 test_csv = pd.read_csv(path+"test.csv",index_col=0)
 submit_csv = pd.read_csv(path+"sample_submission.csv")

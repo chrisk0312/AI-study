@@ -14,7 +14,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
-path = "C:\\_data\\DACON\\와인품질분류\\"
+path = "C:\\_data\\dacon\\wine\\"
 train_csv = pd.read_csv(path+"train.csv",index_col=0)
 test_csv = pd.read_csv(path+"test.csv",index_col=0)
 submit_csv = pd.read_csv(path+"sample_submission.csv")
@@ -35,7 +35,7 @@ from sklearn.preprocessing import LabelEncoder
 import warnings
 warnings.filterwarnings('ignore')
 
-""" import time
+import time
 st = time.time()    # pandas로 해보기
 y_fix0 = y.copy()
 y_fix0.loc[y_fix0 == 3] = 5
@@ -77,7 +77,7 @@ for idx, data in enumerate(y_fix2):
 
 y = y_fix2
 et = time.time()
-print(et-st,"sec") """
+print(et-st,"sec") 
         
 print(np.unique(y,return_counts=True))
 
