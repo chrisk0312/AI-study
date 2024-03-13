@@ -1,6 +1,7 @@
 import numpy as np
 import random
 import os
+from IPython.display import display
 
 def seed_everything(seed):
     random.seed(seed)
@@ -11,8 +12,8 @@ seed_everything(42) # Seed 고정
 
 import pandas as pd
 
-train = pd.read_csv('./train.csv')
-test = pd.read_csv('./test.csv')
+train = pd.read_csv('C:\_data\kaggle\predict_income\open//train.csv')
+test = pd.read_csv('C:\_data\kaggle\predict_income\open//test.csv')
 
 display(train.head(3))
 display(test.head(3))
@@ -43,14 +44,17 @@ for i in encoding_target:
     
     test_x[i] = le.transform(test_x[i])
     
-from sklearn.tree import DecisionTreeRegressor
+# from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor
 
-model = DecisionTreeRegressor() 
+model = RandomForestRegressor() 
+
+# model = DecisionTreeRegressor() 
 model.fit(train_x, train_y) 
 preds = model.predict(test_x)
 
-submission = pd.read_csv('./sample_submission.csv')
+submission = pd.read_csv('C:\_data\kaggle\predict_income\open//sample_submission.csv')
 submission['Income'] = preds
 submission
 
-submission.to_csv('./baseline_submission.csv', index=False)
+submission.to_csv('C:\_data\kaggle\predict_income\open//baseline_submission.csv', index=False)

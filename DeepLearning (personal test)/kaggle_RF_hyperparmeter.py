@@ -10,14 +10,14 @@ y_train = data['login']
 
 # GridSearchCV를 위한 하이퍼파라미터 설정
 param_search_space = {
-    'n_estimators': [10, 50, 100],
-    'max_depth': [None, 10, 30],
-    'min_samples_split': [2, 10],
-    'min_samples_leaf': [1, 4]
+    'n_estimators': [33],
+    'max_depth': [None],
+    'min_samples_split': [33],
+    'min_samples_leaf': [33]
 }
 
 # RandomForestClassifier 객체 생성
-rf = RandomForestClassifier(random_state=42)
+rf = RandomForestClassifier(random_state=333)
 
 # GridSearchCV 객체 생성
 grid_search = GridSearchCV(estimator=rf, param_grid=param_search_space, cv=3, n_jobs=-1, verbose=2, scoring='roc_auc')
@@ -38,4 +38,4 @@ for param, value in best_params.items():
     if param in submit.columns:
         submit[param] = value
 
-submit.to_csv('C:\_data\kaggle\RF_hyperparameter\open//baseline_submit.csv', index=False)
+submit.to_csv('C:\_data\kaggle\RF_hyperparameter\open//baseline_submit1.csv', index=False)
