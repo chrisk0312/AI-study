@@ -48,7 +48,7 @@ for i in encoding_target:
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor,  AdaBoostRegressor
 
 # # model = RandomForestRegressor() 
-model = GradientBoostingRegressor(random_state=314)
+model = GradientBoostingRegressor(random_state=31234)
 # model = AdaBoostRegressor()
 
 
@@ -60,4 +60,4 @@ submission = pd.read_csv('C:\_data\dacon\predict_income\open//sample_submission.
 submission['Income'] = preds
 submission
 
-submission.to_csv('C:\_data\dacon\predict_income\open//submission0315_3.csv', index=False)
+submission.to_csv('C:\_data\dacon\predict_income\open//submission0320_3.csv', index=False)
