@@ -130,6 +130,27 @@ def FCN(nClasses, input_height=128, input_width=128, n_filters = 16, dropout = 0
 
     return model
 
+# def FCN(nClasses, input_height=128, input_width=128, n_filters=16, dropout=0.1, batchnorm=True, n_channels=10):
+#     img_input = Input(shape=(input_height, input_width, n_channels))  # Use n_channels here
+    
+#     ## Block 1
+#     x = Conv2D(n_filters, (3, 3), activation='relu', padding='same', name='block1_conv1')(img_input)
+#     x = Conv2D(n_filters, (3, 3), activation='relu', padding='same', name='block1_conv2')(x)
+#     f1 = x
+    
+#     # Block 2
+#     x = Conv2D(n_filters, (3, 3), activation='relu', padding='same', name='block2_conv1')(x)
+#     x = Conv2D(n_filters, (3, 3), activation='relu', padding='same', name='block2_conv2')(x)
+#     f2 = x
+    
+#     # Out
+#     o = (Conv2D(nClasses, (3, 3), activation='relu', padding='same', name="Out"))(x)
+    
+#     model = Model(img_input, o)
+#     return model
+
+
+
 
 def conv2d_block(input_tensor, n_filters, kernel_size = 3, batchnorm = True):
     # first layer
@@ -299,7 +320,7 @@ save_name = 'base_line4'
 
 N_FILTERS = 3 # 필터수 지정
 N_CHANNELS = 3 # channel 지정
-EPOCHS = 1 # 훈련 epoch 지정
+EPOCHS = 3 # 훈련 epoch 지정
 BATCH_SIZE = 8 # batch size 지정
 IMAGE_SIZE = (256, 256) # 이미지 크기 지정
 MODEL_NAME = 'unet' # 모델 이름
@@ -409,4 +430,4 @@ for i in test_meta['test_img']:
     y_pred = y_pred.astype(np.uint8)
     y_pred_dict[i] = y_pred
 
-joblib.dump(y_pred_dict, 'C:\_data\\ai_factory\dataset//train_output/0320_2.pkl')         
+joblib.dump(y_pred_dict, 'C:\_data\\ai_factory\dataset//train_output/0321_2.pkl')         

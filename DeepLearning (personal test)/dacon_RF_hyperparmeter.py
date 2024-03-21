@@ -17,14 +17,15 @@ y_train = data['login']
 
 # GridSearchCV를 위한 하이퍼파라미터 설정
 param_search_space = {
-    'n_estimators': [100],
-    'max_depth': [32],
-    'min_samples_split': [2],
-    'min_samples_leaf': [1],
+    'n_estimators': [100,200,500],
+    'max_depth': [10,20,30,None],
+    'min_samples_split': [2,5,10],
+    'min_samples_leaf': [1,2,4],
+    'max_features': ['auto', 'sqrt', 'log2',0.5,0.75],
 }
 
 # RandomForestClassifier 객체 생성
-rf = RandomForestClassifier(random_state=312)
+rf = RandomForestClassifier(random_state=79)
 
 
 # GridSearchCV 객체 생성
@@ -46,4 +47,4 @@ for param, value in best_params.items():
     if param in submit.columns:
         submit[param] = value
 
-submit.to_csv('C:\_data\dacon\RF_hyperparameter\open//submit0320_3.csv', index=False)
+submit.to_csv('C:\_data\dacon\RF_hyperparameter\open//submit0321_3.csv', index=False)
