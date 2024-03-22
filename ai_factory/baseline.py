@@ -320,8 +320,8 @@ save_name = 'base_line4'
 
 N_FILTERS = 3 # 필터수 지정
 N_CHANNELS = 3 # channel 지정
-EPOCHS = 3 # 훈련 epoch 지정
-BATCH_SIZE = 8 # batch size 지정
+EPOCHS = 30 # 훈련 epoch 지정
+BATCH_SIZE = 4 # batch size 지정
 IMAGE_SIZE = (256, 256) # 이미지 크기 지정
 MODEL_NAME = 'unet' # 모델 이름
 RANDOM_STATE = 44 # seed 고정
@@ -430,4 +430,4 @@ for i in test_meta['test_img']:
     y_pred = y_pred.astype(np.uint8)
     y_pred_dict[i] = y_pred
 
-joblib.dump(y_pred_dict, 'C:\_data\\ai_factory\dataset//train_output/0321_2.pkl')         
+joblib.dump(y_pred_dict, 'C:\_data\\ai_factory\dataset//train_output/0322_2.pkl')         

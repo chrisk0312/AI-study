@@ -25,7 +25,7 @@ param_search_space = {
 }
 
 # RandomForestClassifier 객체 생성
-rf = RandomForestClassifier(random_state=79)
+rf = RandomForestClassifier(random_state=379)
 
 
 # GridSearchCV 객체 생성
@@ -47,4 +47,4 @@ for param, value in best_params.items():
     if param in submit.columns:
         submit[param] = value
 
-submit.to_csv('C:\_data\dacon\RF_hyperparameter\open//submit0321_3.csv', index=False)
+submit.to_csv('C:\_data\dacon\RF_hyperparameter\open//submit0322_3.csv', index=False)
