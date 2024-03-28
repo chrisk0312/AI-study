@@ -114,7 +114,7 @@ for i in encoding_target:
     test_x[i] = le.transform(test_x[i])
 
 # Model: Using GradientBoostingRegressor as an example
-model = GradientBoostingRegressor(random_state=456)
+model = GradientBoostingRegressor(random_state=4567)
 
 # Example of a simple Grid Search for hyperparameter tuning (optional, can be expanded based on needs)
 param_grid = {
@@ -133,7 +133,7 @@ submission = pd.read_csv('C:\_data\dacon\predict_income\open//sample_submission.
 submission['Income'] = preds
 submission
 
-submission.to_csv('C:\_data\dacon\predict_income\open//submission0326_3.csv', index=False)
+submission.to_csv('C:\_data\dacon\predict_income\open//submission0328_2.csv', index=False)
 
 
 # submission = pd.DataFrame({'ID': test['ID'], 'Income': preds})

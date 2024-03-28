@@ -9,16 +9,19 @@ tf.set_random_seed(3)
 
 X_train = [1, 2, 3]
 y_train = [1, 2, 3]
+x_test = [4, 5, 6]
+y_test = [4, 5, 6]
 
 X = tf.compat.v1.placeholder(tf.float32)
 y = tf.compat.v1.placeholder(tf.float32)
 
 w = tf.compat.v1.Variable([10], dtype=tf.float32, name='weight')
-b = tf.compat.v1.Variable([10], dtype=tf.float32, name='weight')
+# b = tf.compat.v1.Variable([10], dtype=tf.float32, name='weight')
+
 
 # 2.모델구성
 
-hypothesis = X * w + b
+hypothesis = X * w 
 
 # 3-1. 컴파일 // model.compile(loss = 'mse', optimizer = 'sgd')
 
@@ -29,7 +32,7 @@ loss = tf.reduce_mean(tf.square(hypothesis - y))    # mse
 # train = optimizer.minimize(loss_fn)
 lr = 0.1
 
-gradient = tf.reduce_mean((X * w + b - y) * X)
+gradient = tf.reduce_mean((X * w - y) * X)
 
 descent = w - lr * gradient
 
@@ -63,7 +66,21 @@ sess.close()
 # print("")
 # print(loss_history)
 
-plt.plot( loss_history)
-plt.xlabel('Epochs')
-plt.ylabel('Loss')
-plt.show()
+# plt.plot( loss_history)
+# plt.xlabel('Epochs')
+# plt.ylabel('Loss')
+# plt.show()
+
+from sklearn.metrics import r2_score,mean_absolute_error
+
+y_pred = x_test * w_v
+print("y_pred: ", y_pred)
+
+
+# Calculate R2 score and MAE
+r2 = r2_score(y_test, y_pred)
+
+mae = mean_absolute_error(y_test, y_pred)
+
+print("R2 score: ", r2)
+print("MAE: ", mae)
