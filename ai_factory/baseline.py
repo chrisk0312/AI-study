@@ -431,3 +431,4 @@ for i in test_meta['test_img']:
     y_pred_dict[i] = y_pred
 
 joblib.dump(y_pred_dict, 'C:\_data\\ai_factory\dataset//train_output/0325_2.pkl')         
+# model.load_weights('C:\_data\\ai_factory\dataset//train_output/model_unet_base_line3_final_weights.h5')  #
