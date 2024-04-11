@@ -20,7 +20,7 @@ loss = model.evaluate(x,y)
 print("로스:", loss)
 result = model.predict([1,2,3,4,5,6,7])
 print ("7의예측값 :", result)
-
+print ("7의예측값 :", result)
 
 # 로스: 0.3238094747066498
 # 1/1 [==============================] - 0s 47ms/step
