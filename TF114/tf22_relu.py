@@ -32,9 +32,10 @@ class Dense_layer():
         self.b = tf.compat.v1.Variable(tf.zeros([1,output_dim]),dtype=tf.float32)
         self.activation = activation
     def get_layer(self,x):
-        if not self.activation:
-            return tf.matmul(x,self.w) + self.b
-        return self.activation(tf.matmul(x,self.w)+self.b)
+        result = tf.matmul(x,self.w) + self.b
+        if self.activation is not None:
+            return self.activation(result)
+        return result
 
 
 layer1 = Dense_layer(512,x_train.shape[1],tf.nn.relu).get_layer(x)

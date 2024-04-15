@@ -1,7 +1,7 @@
 import tensorflow as tf
 import numpy as np
 r = np.random.randint(1,1000)
-# r = 51
+r = 51
 tf.compat.v1.set_random_seed(r)
 
 from sklearn.datasets import load_breast_cancer
@@ -22,10 +22,6 @@ print(x_train.shape,y_train.shape,x_test.shape,y_test.shape)
 x = tf.compat.v1.placeholder(tf.float32,shape=[None,x_train.shape[1]])
 y = tf.compat.v1.placeholder(tf.float32,shape=[None,])
 
-
-# model
-IS_TRAIN = True
-
 class Dense_layer():
     def __init__(self, output_dim, input_dim, activation=None) -> None:
         self.w = tf.compat.v1.Variable(tf.random_normal([input_dim,output_dim]))
@@ -39,12 +35,12 @@ class Dense_layer():
 
 layer1 = Dense_layer(512,x_train.shape[1],tf.nn.relu).get_layer(x)
 layer2 = Dense_layer(256,512,tf.nn.relu).get_layer(layer1)
-if IS_TRAIN:
-    layer2 = tf.compat.v1.nn.dropout(layer2,keep_prob=0.5)
-layer3 = Dense_layer(128,256,tf.nn.relu).get_layer(layer2)
-layer4 = Dense_layer(64,128,tf.nn.relu).get_layer(layer3)
-layer5 = Dense_layer(32,64,tf.nn.sigmoid).get_layer(layer4)
-hypothesis = Dense_layer(1,32,tf.nn.sigmoid).get_layer(layer5)
+# layer2 = tf.compat.v1.nn.dropout(layer2,keep_prob=0.5)
+layer3 = Dense_layer(256,256,tf.nn.sigmoid).get_layer(layer2)
+layer4 = Dense_layer(128,256,tf.nn.relu).get_layer(layer3)
+layer5 = Dense_layer(64,128,tf.nn.relu).get_layer(layer4)
+layer6 = Dense_layer(32,64,tf.nn.sigmoid).get_layer(layer5)
+hypothesis = Dense_layer(1,32,tf.nn.sigmoid).get_layer(layer6)
 
 loss_fn = -tf.reduce_mean(y*tf.log(hypothesis) + (1-y)*tf.log(1-hypothesis))
 optimizer = tf.train.AdamOptimizer(learning_rate=0.001)
@@ -59,11 +55,10 @@ with tf.Session() as sess:
         if step%200 == 0:
             print(f"{step}epo loss={loss}")
         
-    IS_TRAIN = False
     pred = sess.run(hypothesis,feed_dict={x:x_test})
     pred = np.around(pred)
     
-print("pred: ",pred.shape)
+print("pred: ",pred)
 from sklearn.metrics import accuracy_score
 acc = accuracy_score(pred,y_test)
 
@@ -77,10 +72,3 @@ print("Random state: ",r)
 # dropout
 # ACC:  0.6666666666666666
 # Random state:  51
-
-# ACC:  0.6666666666666666
-# Random state:  51
-
-# pred:  (114, 1)
-# ACC:  0.5964912280701754
-# Random state:  840

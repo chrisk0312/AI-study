@@ -1,30 +1,27 @@
 import tensorflow as tf
 import numpy as np
 r = np.random.randint(1,1000)
-# r = 51
+# r = 8603
 tf.compat.v1.set_random_seed(r)
 
-from sklearn.datasets import load_breast_cancer
+from sklearn.datasets import fetch_covtype
 
-x_data, y_data = load_breast_cancer(return_X_y=True)
+x_data, y_data = fetch_covtype(return_X_y=True)
+print(np.unique(y_data,return_counts=True))
 
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
-
+from sklearn.preprocessing import MinMaxScaler, StandardScaler, OneHotEncoder
+y_data = OneHotEncoder(sparse=False).fit_transform(y_data.reshape(-1,1))
 x_train, x_test, y_train, y_test = train_test_split(x_data,y_data,train_size=0.8,random_state=r)
 scaler = StandardScaler().fit(x_train)
 x_train = scaler.transform(x_train)
 x_test = scaler.transform(x_test)
 
 print(x_train.shape,y_train.shape,x_test.shape,y_test.shape)
-# (455, 30) (455,) (114, 30) (114,)
+# (464809, 54) (464809, 7) (116203, 54) (116203, 7)
 
 x = tf.compat.v1.placeholder(tf.float32,shape=[None,x_train.shape[1]])
-y = tf.compat.v1.placeholder(tf.float32,shape=[None,])
-
-
-# model
-IS_TRAIN = True
+y = tf.compat.v1.placeholder(tf.float32,shape=[None,y_train.shape[1]])
 
 class Dense_layer():
     def __init__(self, output_dim, input_dim, activation=None) -> None:
@@ -32,55 +29,42 @@ class Dense_layer():
         self.b = tf.compat.v1.Variable(tf.zeros([1,output_dim]),dtype=tf.float32)
         self.activation = activation
     def get_layer(self,x):
-        if not self.activation:
-            return tf.matmul(x,self.w) + self.b
-        return self.activation(tf.matmul(x,self.w)+self.b)
+        result = tf.matmul(x,self.w) + self.b
+        if self.activation is not None:
+            return self.activation(result)
+        return result
 
 
 layer1 = Dense_layer(512,x_train.shape[1],tf.nn.relu).get_layer(x)
 layer2 = Dense_layer(256,512,tf.nn.relu).get_layer(layer1)
-if IS_TRAIN:
-    layer2 = tf.compat.v1.nn.dropout(layer2,keep_prob=0.5)
-layer3 = Dense_layer(128,256,tf.nn.relu).get_layer(layer2)
-layer4 = Dense_layer(64,128,tf.nn.relu).get_layer(layer3)
-layer5 = Dense_layer(32,64,tf.nn.sigmoid).get_layer(layer4)
-hypothesis = Dense_layer(1,32,tf.nn.sigmoid).get_layer(layer5)
+layer3 = Dense_layer(256,256,tf.nn.sigmoid).get_layer(layer2)
+layer4 = Dense_layer(128,256,tf.nn.relu).get_layer(layer3)
+layer5 = Dense_layer(64,128,tf.nn.relu).get_layer(layer4)
+layer6 = Dense_layer(32,64,tf.nn.sigmoid).get_layer(layer5)
+hypothesis = Dense_layer(y_train.shape[1],32,tf.nn.softmax).get_layer(layer6)
 
-loss_fn = -tf.reduce_mean(y*tf.log(hypothesis) + (1-y)*tf.log(1-hypothesis))
+loss_fn = tf.compat.v1.losses.softmax_cross_entropy(y,hypothesis)
 optimizer = tf.train.AdamOptimizer(learning_rate=0.001)
 
 train = optimizer.minimize(loss_fn)
 
-EPOCHS = 5000
+EPOCHS = 100
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
     for step in range(1,EPOCHS+1):
         _, loss = sess.run([train,loss_fn],feed_dict={x:x_train,y:y_train})
-        if step%200 == 0:
+        if step%1 == 0:
             print(f"{step}epo loss={loss}")
         
-    IS_TRAIN = False
     pred = sess.run(hypothesis,feed_dict={x:x_test})
     pred = np.around(pred)
     
-print("pred: ",pred.shape)
+print("pred: ",pred)
 from sklearn.metrics import accuracy_score
 acc = accuracy_score(pred,y_test)
 
 print("ACC: ",acc)
 print("Random state: ",r)
 
-# origin
-# ACC:  0.6666666666666666
-# Random state:  51
-
-# dropout
-# ACC:  0.6666666666666666
-# Random state:  51
-
-# ACC:  0.6666666666666666
-# Random state:  51
-
-# pred:  (114, 1)
-# ACC:  0.5964912280701754
-# Random state:  840
+# ACC:  0.509788903900932
+# Random state:  343
