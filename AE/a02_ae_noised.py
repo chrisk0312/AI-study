@@ -61,7 +61,7 @@ autoencoder.summary()
 # autoencoder.compile(optimizer='adam', loss='mse', )
 autoencoder.compile(optimizer='adam', loss='binary_crossentropy', )
 
-autoencoder.fit(X_train_noised, X_train, epochs=30, batch_size=128, validation_split=0.2)
+autoencoder.fit(X_train_noised, X_train, epochs=10, batch_size=128, validation_split=0.2)
 
 # 4.평가, 예측
 decoded_imgs = autoencoder.predict(X_test_noised)
