@@ -74,3 +74,17 @@ output = model.forward(src, src_mask)
 
 # Print the output
 print(output)
+
+import matplotlib.pyplot as plt
+
+# Assuming output is a tensor with shape (batch_size, seq_len, hid_dim)
+# Take the mean over the hidden dimension to get a 2D tensor
+output_mean = output.mean(dim=2)
+
+# Convert the tensor to numpy for plotting
+output_mean_np = output_mean.detach().numpy()
+
+# Create a heatmap
+plt.imshow(output_mean_np, cmap='hot', interpolation='nearest')
+plt.colorbar()
+plt.show()
