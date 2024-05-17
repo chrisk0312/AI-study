@@ -61,7 +61,8 @@ class Transformer(nn.Module):
         return self.fc_out(src)
 
 # Instantiate the Transformer
-model = Transformer(input_dim=512, output_dim=512, hid_dim=2048, n_layers=6, n_heads=8, pf_dim=2048, dropout=0.1, device=torch.device('cpu'))
+model = Transformer(input_dim=512, output_dim=512, hid_dim=2048, n_layers=6,
+                    n_heads=8, pf_dim=2048, dropout=0.1, device=torch.device('cpu'))
 
 # Create a dummy input tensor (batch_size=64, src_len=100)
 src = torch.randint(0, 512, (64, 100))
