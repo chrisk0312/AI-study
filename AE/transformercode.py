@@ -4,8 +4,8 @@ from keras_transformer import get_model, decode
 import sacrebleu
 
 # 엑셀 파일 로딩
-file_path = "C:/Users/AIA/Documents/ko_en_guache.xlsx"
-data = pd.read_excel(file_path)
+file_path = "C:\study\MAIN\AE\\test.csv"
+data = pd.read_csv(file_path)
 
 # 소스 문장과 타겟 문장을 리스트로 추출
 source_sentences = data['원문'].tolist()[:10000]
