@@ -2,14 +2,16 @@ import numpy as np
 import pandas as pd
 from keras_transformer import get_model, decode
 import sacrebleu
+from datasets import load_dataset
+from collections import defaultdict
+data = load_dataset("embedding-data/altlex")
 
-# 엑셀 파일 로딩
-file_path = "C:\study\MAIN\AE\\test.csv"
-data = pd.read_csv(file_path)
+print(data.column_names)
 
-# 소스 문장과 타겟 문장을 리스트로 추출
-source_sentences = data['원문'].tolist()[:10000]
-target_sentences = data['번역문'].tolist()[:10000]
+
+source_sentences = data['train']['set'][:10000]
+target_sentences = data['train']['set'][:10000]
+
 
 print(source_sentences[0])
 print(target_sentences[0])
@@ -18,10 +20,10 @@ print(target_sentences[0])
 source_tokens = [list(sentence) for sentence in source_sentences]
 target_tokens = [list(sentence) for sentence in target_sentences]
 
-# 토큰 딕셔너리화 함수
+
 def build_token_dict(token_list):
     # 초기에 명시적으로 특수 토큰 추가
-    token_dict = {'<PAD>': 0, '<START>': 1, '<END>': 2}
+    token_dict = {'<PAD>': 0, '<START>': 1, '<END>': 2, '<UNK>': 3}
     for tokens in token_list:
         for token in tokens:
             if token not in token_dict:
@@ -33,11 +35,10 @@ source_token_dict = build_token_dict(source_tokens)
 target_token_dict = build_token_dict(target_tokens)
 target_token_dict_inv = {v: k for k, v in target_token_dict.items()}  # 역 딕셔너리 생성
 
-# 특수 토큰 추가 및 패딩
+
 def prepare_tokens(tokens, token_dict):
-    tokens = [['<START>'] + t + ['<END>'] for t in tokens]
     max_len = max(map(len, tokens))
-    tokens = [t + ['<PAD>'] * (max_len - len(t)) for t in tokens]
+    token_dict = defaultdict(lambda: token_dict.get('<UNK>', 0), token_dict)  # handle unknown tokens
     return [list(map(lambda x: token_dict[x], t)) for t in tokens], max_len
 
 source_input, source_max_len = prepare_tokens(source_tokens, source_token_dict)
@@ -49,7 +50,7 @@ target_output = [[target_token_dict[t] for t in sentence] + [target_token_dict['
 # 모델 생성 및 컴파일
 model = get_model(
     token_num=max(len(source_token_dict), len(target_token_dict)),
-    embed_dim=256,
+    embed_dim=128,
     encoder_num=4,
     decoder_num=3,
     head_num=8,
@@ -67,7 +68,7 @@ from keras.callbacks import EarlyStopping
 model.fit(
     x=[np.array(source_input), np.array(target_input)],
     y=np.array(target_output),
-    epochs=10000,
+    epochs=10,
     batch_size=32,
     callbacks = [EarlyStopping(monitor='loss', patience=30, mode= 'min', verbose= 1, restore_best_weights=True)]
 )
@@ -89,7 +90,7 @@ for decoded_sequence in decoded:
     
 #===================================
 
-input_sentences = ["저희는 702호 팀입니다."]
+input_sentences = ["It is known as the Dairy Capital of Canada and promotes itself as `` The Friendly City."]
 input_tokens = [list(sentence) for sentence in input_sentences]
 
 # 토큰 추가 및 패딩
@@ -113,9 +114,10 @@ for decoded_sequence in input_decoded:
     translated_sentence = ''.join([target_token_dict_inv.get(token, '') for token in decoded_sequence if token > 2])
     print(translated_sentence)
 
-    references = [["We are team number 702."]]
+    references = [["캐나다의 낙농 중심지로 알려져 있으며 '친절한 도시'로 자칭하고 있습니다.."]]
     hypothesis = [translated_sentence]  # Hypothesis should be a list of strings
 
     # BLEU 점수 계산
     bleu = sacrebleu.corpus_bleu(hypothesis, references)
+    print(hypothesis, references)
     print(f"BLEU score: {bleu.score}")
