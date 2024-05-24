@@ -45,7 +45,8 @@ source_input, source_max_len = prepare_tokens(source_tokens, source_token_dict)
 target_input, target_max_len = prepare_tokens(target_tokens, target_token_dict)
 
 # 디코딩 출력 준비
-target_output = [[target_token_dict[t] for t in sentence] + [target_token_dict['<PAD>']] * (target_max_len - len(sentence)) for sentence in target_tokens]
+target_output = [[target_token_dict[t] for t in sentence] + [target_token_dict['<PAD>']] * 
+                 (target_max_len - len(sentence)) for sentence in target_tokens]
 
 # 모델 생성 및 컴파일
 model = get_model(
