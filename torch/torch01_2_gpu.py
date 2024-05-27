@@ -12,20 +12,10 @@ print('torch : ', torch.__version__, '사용 DEVICE :', DEVICE)
 x = np.array([1,2,3])
 y = np.array([1,2,3])
 
-pred_x = torch.Tensor([[4]]).to(DEVICE)
-
 x = torch.FloatTensor(x).unsqueeze(1).to(DEVICE)
 y = torch.FloatTensor(y).unsqueeze(1).to(DEVICE)
 
 print(x, y) #tensor([1., 2., 3.]) tensor([1., 2., 3.])
-print(x.shape, y.shape)
-
-x_mean = torch.mean(x)
-x_std = torch.std(x)
-
-x = (x - x_mean) / x_std
-pred_x = (pred_x - x_mean) / x_std
-
 
 #2. 모델구성
 # model = Sequential()
@@ -52,7 +42,7 @@ def train(model, criterion, optimizer, x, y):
     optimizer.step() # 가중치(w) 수정(weight 갱신)
     return loss.item() #item 하면 numpy 데이터로 나옴
 
-epochs = 700
+epochs = 20000
 for epoch in range(1, epochs + 1):
     loss = train(model, criterion, optimizer, x, y)
     print('epoch {}, loss: {}'.format(epoch, loss)) #verbose
@@ -73,7 +63,7 @@ loss2 = evaluate(model, criterion, x, y)
 print("최종 loss : ", loss2)
 
 #result = model.predict([4])
-result = model(pred_x)
+result = model(torch.Tensor([[4]]).to(DEVICE))
 print('4의 예측값 : ', result.item())
 
 '''

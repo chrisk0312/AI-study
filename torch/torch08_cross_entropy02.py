@@ -2,9 +2,8 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
-import torch.nn.functional as F
 from sklearn.model_selection import train_test_split
-from sklearn.datasets import load_breast_cancer
+from sklearn.datasets import load_digits
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score
 
@@ -12,40 +11,40 @@ USE_CUDA = torch.cuda.is_available()
 DEVICE = torch.device('cuda' if USE_CUDA else 'cpu')
 print('torch : ', torch.__version__, '사용 DEVICE :', DEVICE)
 
-#1. 데이터 
-datasets = load_breast_cancer()
+# 1. 데이터
+datasets = load_digits()
 x = datasets.data
 y = datasets.target
 
-print(x.shape, y.shape)
+print(x.shape, y.shape)  # (1797, 64) (1797,)
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.7, random_state=42, shuffle=True, stratify=y)
 
-scaler =StandardScaler()
+scaler = StandardScaler()
 x_train = scaler.fit_transform(x_train)
 x_test = scaler.transform(x_test)
 
 x_train = torch.FloatTensor(x_train).to(DEVICE)
-y_train = torch.FloatTensor(y_train).unsqueeze(1).to(DEVICE)
+y_train = torch.LongTensor(y_train).to(DEVICE)  # CrossEntropyLoss requires LongTensor for targets
 x_test = torch.FloatTensor(x_test).to(DEVICE)
-y_test = torch.FloatTensor(y_test).unsqueeze(1).to(DEVICE)
+y_test = torch.LongTensor(y_test).to(DEVICE)
 
-print(x_train.shape, y_train.shape) 
+print(x_train.shape, y_train.shape)  # (1257, 64) (1257,)
 
-#2. 모델구성
+# 2. 모델 구성
 model = nn.Sequential(
-    nn.Linear(30, 64),
+    nn.Linear(64, 64),
+    nn.ReLU(),
     nn.Linear(64, 32),
     nn.ReLU(),
     nn.Linear(32, 16),
-    nn.Linear(16, 8),
-    nn.Linear(8, 1),
-    nn.Sigmoid()
+    nn.ReLU(),
+    nn.Linear(16, 10)  # 10 classes for digits 0-9
 ).to(DEVICE)
 
-#3. 컴파일, 훈련
-criterion = nn.BCELoss()               #criterion : 표준
-optimizer = optim.Adam(model.parameters(), lr = 0.001)
+# 3. 컴파일, 훈련
+criterion = nn.CrossEntropyLoss()  # criterion : 표준
+optimizer = optim.Adam(model.parameters(), lr=0.01)
 
 def train(model, criterion, optimizer, x, y):
     model.train()  # 훈련 모드
@@ -59,29 +58,31 @@ def train(model, criterion, optimizer, x, y):
 epochs = 3000
 for epoch in range(1, epochs + 1):
     loss = train(model, criterion, optimizer, x_train, y_train)
-    print('epoch {}, loss: {}'.format(epoch, loss)) #verbose
+    if epoch % 100 == 0:
+        print('epoch {}, loss: {}'.format(epoch, loss))  # verbose
 
 print("===================================")
 
-#4. 평가, 예측
+# 4. 평가, 예측
 def evaluate(model, criterion, x, y):
-    model.eval() #평가모드
-    x, y = x.to(DEVICE), y.to(DEVICE)
-
+    model.eval()  # 평가모드
     with torch.no_grad():
         y_predict = model(x)
-        loss2 = criterion(y, y_predict)
+        loss2 = criterion(y_predict, y)
     return loss2.item()
 
 loss2 = evaluate(model, criterion, x_test, y_test)
 print("최종 loss : ", loss2)
 
-results = model(x_test)
-results = np.round(results.cpu().detach().numpy())
-print(results)
+# 예측값 계산 및 정확도 평가
+model.eval()
+with torch.no_grad():
+    y_predict = model(x_test)
+    y_predict = torch.argmax(y_predict, dim=1).cpu().numpy()
 
 # y_test를 CPU로 이동하여 numpy 배열로 변환
-y_test_cpu = y_test.cpu().numpy().squeeze()
-print('예측값 : ', results)
-acc = accuracy_score(results, y_test_cpu)
+y_test_cpu = y_test.cpu().numpy()
+
+print('예측값 : ', y_predict)
+acc = accuracy_score(y_test_cpu, y_predict)
 print("acc : ", acc)

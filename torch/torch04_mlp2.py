@@ -9,34 +9,41 @@ DEVICE = torch.device('cuda' if USE_CUDA else 'cpu')
 print('torch : ', torch.__version__, '사용 DEVICE :', DEVICE)
 
 #1. 데이터 
-x = np.array([1,2,3])
-y = np.array([1,2,3])
+x = np.array(
+    [
+        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        [1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.5, 1.4, 1.3],
+        [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+    ]
+)
 
-pred_x = torch.Tensor([[4]]).to(DEVICE)
+y = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+print(x)
+print(x.shape, y.shape)  # shape : 구조를 보여줌 (2, 10) (10,)
+x = x.T
+print(x.shape)  # (10, 2)
 
-x = torch.FloatTensor(x).unsqueeze(1).to(DEVICE)
+x = torch.FloatTensor(x).to(DEVICE)
 y = torch.FloatTensor(y).unsqueeze(1).to(DEVICE)
 
-print(x, y) #tensor([1., 2., 3.]) tensor([1., 2., 3.])
-print(x.shape, y.shape)
-
-x_mean = torch.mean(x)
-x_std = torch.std(x)
-
-x = (x - x_mean) / x_std
-pred_x = (pred_x - x_mean) / x_std
-
+print(x, y)
 
 #2. 모델구성
 # model = Sequential()
 # model.add(Dense(1, input_dim=1))
-model = nn.Linear(1, 1).to(DEVICE) #output, input
+model = nn.Sequential(
+    nn.Linear(3, 5),
+    nn.Linear(5, 4),
+    nn.Linear(4, 3),
+    nn.Linear(3, 2),
+    nn.Linear(2, 1)
+).to(DEVICE)
 
 #3. 컴파일, 훈련
 # model.compile(loss = 'mse', optimizer = 'adam')
 criterion = nn.MSELoss()                #criterion : 표준
 # optimizer = optim.Adam(model.parameters(), lr = 0.01)
-optimizer = optim.SGD(model.parameters(), lr = 0.1)
+optimizer = optim.SGD(model.parameters(), lr = 0.01)
 
 # model.fit(x,y, epochs = 100, batch_size=1)
 def train(model, criterion, optimizer, x, y):
@@ -52,7 +59,7 @@ def train(model, criterion, optimizer, x, y):
     optimizer.step() # 가중치(w) 수정(weight 갱신)
     return loss.item() #item 하면 numpy 데이터로 나옴
 
-epochs = 700
+epochs = 1000
 for epoch in range(1, epochs + 1):
     loss = train(model, criterion, optimizer, x, y)
     print('epoch {}, loss: {}'.format(epoch, loss)) #verbose
@@ -73,10 +80,5 @@ loss2 = evaluate(model, criterion, x, y)
 print("최종 loss : ", loss2)
 
 #result = model.predict([4])
-result = model(pred_x)
+result = model(torch.Tensor([[10,1.3,0]]).to(DEVICE))
 print('4의 예측값 : ', result.item())
-
-'''
-최종 loss :  6.158037269129654e-14
-4의 예측값 :  3.999999523162842
-'''
