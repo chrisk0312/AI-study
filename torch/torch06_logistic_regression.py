@@ -73,14 +73,14 @@ print("====================================")
 
 #4 model.predict
 # loss = model.evaluate(x,y)
-def evvaluate(model,criterion, x, y):
+def evaluate(model,criterion, x, y):
     model.eval() #평가 모드로 변경
     with torch.no_grad():
         y_predict = model(x)
         loss2 = criterion(y_predict, y)
     return loss2.item()
 
-loss2 = evvaluate(model, criterion, x, y)
+loss2 = evaluate(model, criterion, x, y)
 print("최종 loss : ", loss2)
 
 # result  = model.predict([4])
