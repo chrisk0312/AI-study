@@ -17,7 +17,7 @@ model.add(Dense(1))
 model.summary()
 
 #3.컴파일 훈련
-#0620 test
+#0619 test
 
 
 
